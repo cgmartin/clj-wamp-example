@@ -1,0 +1,43 @@
+{% extends "clj_wamp_example/views/layout.html" %}
+{% block content %}
+
+<h1>Chat</h1>
+<button id="pub-event-btn">Publish Event</button>
+
+{% endblock %}
+
+{% block inline-script %}
+<script src="http://autobahn.s3.amazonaws.com/js/autobahn.min.js"></script>
+<script>
+    var sess;
+    var wsuri = "ws://localhost:8080/ws";
+
+    window.onload = function() {
+        ab.connect(
+            wsuri,
+            // Connected
+            function (session) {
+                sess = session;
+                console.log("Connected to " + wsuri);
+                sess.prefix("event", "http://clj-wamp-example/event#");
+                sess.subscribe("event:chat", onEvent);
+            },
+            // Disconnected
+            function (code, reason) {
+                sess = null;
+                console.log("Connection lost (" + reason + ")");
+            },
+            // Options
+            {'maxRetries': 60, 'retryDelay': 5000, 'skipSubprotocolCheck': true}
+        );
+    };
+
+    function onEvent(topic, event) {
+        console.log("Received event", topic, event);
+    }
+
+    $('#pub-event-btn').click(function (e) {
+        sess.publish("event:chat", {a: "foo", b: "bar", c: 23});
+    });
+</script>
+{% endblock %}

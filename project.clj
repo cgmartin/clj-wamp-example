@@ -5,7 +5,23 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :min-lein-version "2.0.0"
   :dependencies [[org.clojure/clojure "1.5.1"]
+                 [log4j
+                  "1.2.17"
+                  :exclusions [javax.mail/mail
+                               javax.jms/jms
+                               com.sun.jdmk/jmxtools
+                               com.sun.jmx/jmxri]]
                  [org.clojure/tools.logging "0.2.6"]
-                 [http-kit "2.1.3"]]
-  :profiles {:1.4 {:dependencies [[org.clojure/clojure "1.4.0"]]}}
-  :main clj-wamp-example.core)
+                 [ring-server "0.2.8"]
+                 [lib-noir "0.5.5"]
+                 [compojure "1.1.5"]
+                 [clabango "0.5"]
+                 [http-kit "2.1.3"]
+                 [clj-wamp "0.3.0"]]
+  :plugins [[lein-ring "0.8.5"]]
+  :profiles {:1.4 {:dependencies [[org.clojure/clojure "1.4.0"]]}
+             :dev {:dependencies [[ring-mock "0.1.4"]]
+                   :resource-paths ["resources-dev"]
+                   :jvm-opts ["-Xmx1g" "-server"
+                              "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"]}}
+  :main clj-wamp-example.server)

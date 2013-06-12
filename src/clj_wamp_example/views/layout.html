@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>clj-wamp-example{% if title %} ~ {{ title }}{% endif %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.min.css" rel="stylesheet">
+    <style>{% block inline-style %}{% endblock %}</style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="navbar">
+            <div class="navbar-inner">
+                <a class="brand" href="/">clj-wamp-example</a>
+                <ul class="nav large-icons">
+                    <li><a href="/chat" rel="tooltip"
+                           data-toggle="tooltip" data-placement="bottom"
+                           title="Chat PubSub example"
+                           >Chat <i class="icon-comments"></i></a></li>
+                    <li><a href="/rpc" rel="tooltip"
+                           data-toggle="tooltip" data-placement="bottom"
+                           title="Remote Procedure Call example"
+                           >RPC <i class="icon-exchange"></i></a></li>
+                </ul>
+
+                <ul class="nav large-icons pull-right">
+                    <li><a href="https://github.com/cgmartin/clj-wamp-example"
+                            >Fork @ GitHub <i class="icon-github"></i></a></li>
+                </ul>
+            </div>
+        </div>
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="//code.jquery.com/jquery-2.0.0.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script>
+        $('a[rel=tooltip]').tooltip();
+    </script>
+    {% block inline-script %}{% endblock %}
+</body>
+</html>
