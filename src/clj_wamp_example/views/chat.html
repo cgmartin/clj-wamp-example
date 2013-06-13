@@ -1,43 +1,98 @@
 {% extends "clj_wamp_example/views/layout.html" %}
 {% block content %}
+    <div class="row-fluid">
+        <!-- Chat Messages Panel -->
+        <div id="chat-panel">
+            <header>
+                <div class="pull-right">
+                    <button type="button" class="btn" title="Hide/Show system messages"
+                            data-toggle="button" id="hide-system-msgs-btn"
+                            ><i class="icon-comments-alt"></i></button></div>
+                <h1>Chat</h1>
+            </header>
+            <div id="messages-wrap">
+                <ul id="messages"></ul>
+            </div>
+            <!-- Message templates -->
+            <script type="text/template" id="message-template">
+                <li id="${id}" class="${type} new">
+                    <span class="title label">${username}</span>
+                    <div>
+                        <span class="time pull-right">${time}</span>
+                        <span class="message">${message}</span>
+                    </div>
+                </li>
+            </script>
+            <script type="text/template" id="system-message-template">
+                <li id="${id}" class="system new">
+                    <span class="time pull-right">${time}</span>
+                    <span class="message">${message}</span>
+                </li>
+            </script>
+        </div>
 
-<h1>Chat</h1>
-<button id="pub-event-btn">Publish Event</button>
+        <!-- User List Panel -->
+        <div id="user-panel">
+            <header>
+                <h2>Users</h2>
+            </header>
+            <div id="users-wrap">
+                <ul id="users"></ul>
+            </div>
+            <!-- User Templates -->
+            <script type="text/template" id="user-template">
+                <li class="${type} new" id="user-${clientId}"><span class="label">${username}</span></li>
+            </script>
+            <script type="text/template" id="user-self-template">
+                <li class="${type} new" id="user-${clientId}"><span class="label"
+                        ><i class="icon-cog pull-right"></i>${username}</span></li>
+            </script>
+        </div>
+    </div>
+{% endblock %}
 
+{% block footer %}
+    <!-- Chat Message Entry (fixed to botttom) -->
+    <div id="footer">
+        <div class="navbar navbar-fixed-bottom">
+            <div class="navbar-inner">
+                <div class="container">
+                    <form id="send-message-form" class="navbar-form pull-left">
+                        <input type="text" id="message-input" name="message" class="span12"
+                               placeholder="Type message here..." autofocus maxlength="140">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Username Modal -->
+    <div id="change-username-modal" class="modal hide fade">
+        <form id="change-username-form" class="modal-form">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3>Change username</h3>
+            </div>
+            <div class="modal-body">
+                <input type="text" value="" id="username" maxlength="20">
+
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn" data-dismiss="modal">Close</a>
+                <button type="submit" class="btn btn-success">Save</button>
+            </div>
+        </form>
+    </div>
 {% endblock %}
 
 {% block inline-script %}
-<script src="http://autobahn.s3.amazonaws.com/js/autobahn.min.js"></script>
-<script>
-    var sess;
-    var wsuri = "ws://localhost:8080/ws";
+<script src="//autobahn.s3.amazonaws.com/js/autobahn.min.js"></script>
+<script src="/js/chat.js"></script>
+{% endblock %}
 
-    window.onload = function() {
-        ab.connect(
-            wsuri,
-            // Connected
-            function (session) {
-                sess = session;
-                console.log("Connected to " + wsuri);
-                sess.prefix("event", "http://clj-wamp-example/event#");
-                sess.subscribe("event:chat", onEvent);
-            },
-            // Disconnected
-            function (code, reason) {
-                sess = null;
-                console.log("Connection lost (" + reason + ")");
-            },
-            // Options
-            {'maxRetries': 60, 'retryDelay': 5000, 'skipSubprotocolCheck': true}
-        );
-    };
-
-    function onEvent(topic, event) {
-        console.log("Received event", topic, event);
-    }
-
-    $('#pub-event-btn').click(function (e) {
-        sess.publish("event:chat", {a: "foo", b: "bar", c: 23});
-    });
-</script>
+{% block head-style %}
+<link href="/css/chat.css" rel="stylesheet">
+<style id="filter-system-msgs-style">
+    #messages .system { display: none; }
+</style>
 {% endblock %}

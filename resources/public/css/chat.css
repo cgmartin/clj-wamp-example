@@ -1,0 +1,56 @@
+#nav-collapse-btn { display: none; }
+
+/* Chat messages */
+#messages { margin: 0; }
+#messages li {
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid #cbcbcb;
+    background-color: #fff;
+    padding: 2px 10px;
+    list-style: none;
+    opacity: 1; transition: opacity .25s linear;
+}
+#messages .new { opacity: 0; transition: opacity .3s linear; }
+#messages .time { width: 60px; color: #aaa; font-size: 12px; text-align: right; }
+#messages .self { border-top: 1px solid #ffe; background-color: #ffe; }
+#messages .self .title { background-color: #f89406; }
+#messages .system {
+    color: #888; background-color: #efefef;
+    border-bottom: 1px solid #efefef;
+    border-top: 1px solid #efefef;
+    font-size: 11px;
+}
+
+/* User listing */
+#users { margin: 0; }
+#users li {
+    padding: 2px 5px; list-style: none;
+    opacity: 1; transition: opacity .25s linear;
+}
+#users .new { opacity: 0; }
+#users .label { display: block; padding: 4px; background-color: #eee; color: #333; font-weight: normal; }
+#users .self .label { background-color: #f89406; color: #fff; font-weight: normal; }
+#users .admin .label { background-color: #b94a48; color: #fff; font-weight: normal; }
+
+/* Affix chat panels to sides */
+#chat-panel, #user-panel { padding: 0 5px 5px; top: 40px; bottom: 50px; position: absolute; }
+#chat-panel { padding-left: 10px; padding-right: 10px; left: 0; right: 150px; }
+#messages-wrap {
+    overflow-y: auto; position: absolute; top: 60px;
+    bottom: 0; left: 0; right: 0; border-top: 1px solid #efefef;
+}
+
+#user-panel { width: 140px; right: 0; border-left: 1px solid rgba(0,0,0,.1); }
+#users-wrap { position: absolute; top: 60px; bottom: 0; left: 0; right: 0; overflow-y: auto; }
+
+.navbar-fixed-bottom .navbar-inner { padding: 5px 0; }
+
+/* Disable responsive styles for fixed footer */
+@media (max-width: 979px) {
+    .navbar-fixed-bottom { position: fixed; margin-top: 0; }
+    .navbar-fixed-bottom .navbar-inner { padding: 5px 20px; }
+    .navbar.navbar-fixed-bottom .container { width: 724px; padding: 0 20px; }
+}
+@media (max-width: 767px) {
+    .navbar-fixed-bottom input[class*="span"] { display: inline-block; width: 300px; }
+}

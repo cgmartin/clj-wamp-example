@@ -7,34 +7,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.min.css" rel="stylesheet">
-    <style>{% block inline-style %}{% endblock %}</style>
+    {% block head-style %}{% endblock %}
 </head>
 <body>
-
-    <div class="container">
-        <div class="navbar">
+    <div id="wrap">
+        <div class="navbar navbar-static-top">
             <div class="navbar-inner">
-                <a class="brand" href="/">clj-wamp-example</a>
-                <ul class="nav large-icons">
-                    <li><a href="/chat" rel="tooltip"
-                           data-toggle="tooltip" data-placement="bottom"
-                           title="Chat PubSub example"
-                           >Chat <i class="icon-comments"></i></a></li>
-                    <li><a href="/rpc" rel="tooltip"
-                           data-toggle="tooltip" data-placement="bottom"
-                           title="Remote Procedure Call example"
-                           >RPC <i class="icon-exchange"></i></a></li>
-                </ul>
+                <div class="container">
+                    <a id="nav-collapse-btn" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
 
-                <ul class="nav large-icons pull-right">
-                    <li><a href="https://github.com/cgmartin/clj-wamp-example"
-                            >Fork @ GitHub <i class="icon-github"></i></a></li>
-                </ul>
+                    <a class="brand" href="/">clj-wamp-example</a>
+
+                    <div class="nav-collapse collapse">
+                        <ul class="nav large-icons ">
+                            <li><a href="/chat" rel="tooltip"
+                                   title="Chat PubSub example"
+                                   >Chat <i class="icon-comments"></i></a></li>
+                            <li><a href="/rpc" rel="tooltip"
+                                   title="Remote Procedure Call example"
+                                   >RPC <i class="icon-exchange"></i></a></li>
+                        </ul>
+
+                        <ul class="nav large-icons pull-right">
+                            <li><a href="https://github.com/cgmartin/clj-wamp-example"
+                                    >Fork @ GitHub <i class="icon-github"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
 
-        {% block content %}{% endblock %}
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
     </div>
+
+    {% block footer %}{% endblock %}
 
     <script src="//code.jquery.com/jquery-2.0.0.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
