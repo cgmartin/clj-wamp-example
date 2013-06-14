@@ -33,11 +33,23 @@
   [sess-id topic]
   (log/debug "Websocket subscribed [" sess-id "] " topic)
   (when (= topic (evt-url "chat"))
-    (wamp/send-event! topic {:type     "user-joined"
-                             :clientId sess-id
-                             :username (get-username sess-id)})
-    (wamp/send-event! sess-id topic {:type  "user-list"
-                                     :users (get-user-list topic)} true)))
+    (let [username (get-username sess-id)]
+      (wamp/send-event! topic
+        {:type     "user-joined"
+         :clientId sess-id
+         :username username})
+
+      (wamp/send-event! sess-id topic
+        {:type  "user-list"
+         :users (get-user-list topic)}
+        true)
+
+      (wamp/send-event! sess-id topic
+        {:type     "message"
+         :clientId 0
+         :username "clj-wamp"
+         :message  (str "Hello, *" username "*, welcome to clj-wamp chat! "
+                     "To change your username, click it in the \"Users\" list on the right.")} true))))
 
 (defn ws-on-unsubscribe
   "After unsubscribing from any topic"

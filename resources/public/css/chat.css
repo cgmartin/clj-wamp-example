@@ -13,6 +13,7 @@
 #messages .new { opacity: 0; transition: opacity .3s linear; }
 #messages .time { width: 60px; color: #aaa; font-size: 12px; text-align: right; }
 #messages .self { border-top: 1px solid #ffe; background-color: #ffe; }
+#messages .admin { border-top: 1px solid #efe; background-color: #efe; }
 #messages .self .title { background-color: #f89406; }
 #messages .system {
     color: #888; background-color: #efefef;

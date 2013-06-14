@@ -106,13 +106,21 @@ function addMessage(mid, msgStr) {
 
 function notifyChatMessage(clientId, username, message) {
     var mid = messageId++;
+
+    var type = "user";
+    if (clientId === sess.sessionid()) {
+        type = "self";
+    } else if (clientId == 0) {
+        type = "admin";
+    }
+
     addMessage(mid,
         formatTemplate('message-template', {
             "id":       "msg-" + mid,
             "username": username,
             "time":     getTimeFmt(),
             "message":  message,
-            "type":     (clientId === sess.sessionid()) ? "self" : "user"
+            "type":     type
         }));
 }
 
