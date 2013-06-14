@@ -87,6 +87,7 @@
 
 {% block inline-script %}
 <script src="//autobahn.s3.amazonaws.com/js/autobahn.min.js"></script>
+<script>var WS_URI = "{{ws-uri}}";</script>
 <script src="/js/chat.js"></script>
 {% endblock %}
 

@@ -1,5 +1,4 @@
 var sess;
-var wsuri = "ws://localhost:8080/ws";
 var currentUsername = 'guest';
 var messageId = 0;
 
@@ -7,11 +6,11 @@ var messageId = 0;
 $(function() {
     // Connect to WebSocket
     ab.connect(
-        wsuri,
+        WS_URI,
         // Connection callback
         function (session) {
             sess = session;
-            console.log("Connected to " + wsuri, sess.sessionid());
+            console.log("Connected to " + WS_URI, sess.sessionid());
             sess.prefix("event", "http://clj-wamp-example/event#"); // Add a CURI prefix
             sess.subscribe("event:chat", onEvent);                  // Subscribe to chat channel
         },
