@@ -13,14 +13,20 @@ $(function() {
             console.log("Connected to " + WS_URI, sess.sessionid());
             sess.prefix("event", "http://clj-wamp-example/event#"); // Add a CURI prefix
             sess.subscribe("event:chat", onEvent);                  // Subscribe to chat channel
+            $('#error-modal').modal('hide');
+            setTimeout(function () { $('#change-username-modal').modal('show'); }, 1000);
         },
         // Disconnection callback
         function (code, reason) {
             sess = null;
             console.log("Connection lost (" + reason + ")");
+            $('#change-username-modal').modal('hide');
+            $('#error-modal .reason').text(reason);
+            $('#error-modal').modal('show');
         },
-        // Options                                         Important!  vvvv
-        {'maxRetries': 60, 'retryDelay': 5000, 'skipSubprotocolCheck': true}
+        //          Http-kit does not currently support sub-protocol headers
+        // Options                                          Important!  vvvv
+        {'maxRetries': 60, 'retryDelay': 30000, 'skipSubprotocolCheck': true}
     );
 
     // Message submit form handler
@@ -48,10 +54,14 @@ $(function() {
         .on('hidden', function() {
             $('#message-input').focus();
         })
-        .on('shown', function() {
+        .on('show', function() {
             $('#username').val(currentUsername);
+        })
+        .on('shown', function() {
             $('#username').focus().select();
         });
+
+    $('#error-modal').modal({ show: false, backdrop: 'static', keyboard: false });
 
     // System messages toggle
     $('#hide-system-msgs-btn').button().click(toggleSystemMessages);

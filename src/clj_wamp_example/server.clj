@@ -2,7 +2,6 @@
   (:gen-class)
   (:use compojure.core
         clj-wamp-example.websocket
-        [carica.core :refer [configurer resources]]
         [clojure.tools.cli :only [cli]])
   (:require [clojure.java.io :as io]
             [noir.util.middleware :as middleware]
@@ -10,11 +9,10 @@
             [clojure.tools.logging :as log]
             [ring.middleware.reload :as reload]
             [org.httpkit.server :as http-kit]
-            [clabango.parser :as parser])
-  (:import [java.io PushbackReader]))
+            [clabango.parser :as parser]))
 
 ;; Get app config from resources dir
-(def conf (configurer (resources "config.clj")))
+(def conf (read-string (slurp (io/resource "config.clj"))))
 
 ;; Application routes ####################################
 
@@ -57,7 +55,7 @@
             ["-p" "--port" "Listen on this port"       :default 8080 :parse-fn #(Integer. %)]
             ["-i" "--ip"   "The ip address to bind to" :default "0.0.0.0"]
             ["-h" "--help" "Show help"                 :default false :flag true])
-          httpkit-cfg (assoc (conf :http-kit)
+          httpkit-cfg (assoc (:http-kit conf)
                         :port (:port options)
                         :ip   (:ip options))]
       (when (:help options)

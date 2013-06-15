@@ -22,6 +22,10 @@
     font-size: 11px;
 }
 
+/* Error modal */
+#error-modal { color: #b94a48; border-color: #eed3d7; border-width: 2px;}
+#error-modal .modal-body, #error-modal .modal-header { background-color: #f2dede; border-color: #eed3d7; }
+
 /* User listing */
 #users { margin: 0; }
 #users li {
