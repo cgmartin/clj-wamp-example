@@ -14,7 +14,8 @@ $(function() {
             sess.prefix("event", "http://clj-wamp-example/event#"); // Add a CURI prefix
             sess.subscribe("event:chat", onEvent);                  // Subscribe to chat channel
             $('#error-modal').modal('hide');
-            setTimeout(function () { $('#change-username-modal').modal('show'); }, 1000);
+            // Enable below to show the change username modal upon connection
+            //setTimeout(function () { $('#change-username-modal').modal('show'); }, 500);
         },
         // Disconnection callback
         function (code, reason) {

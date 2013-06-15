@@ -2,6 +2,7 @@
   (:use [clojure.string :only [split]])
   (:require [clojure.tools.logging :as log]
             [org.httpkit.server :as http-kit]
+            [org.httpkit.timer :as timer]
             [clj-wamp.server :as wamp]))
 
 (declare usernames add-username del-username get-username get-user-list truncate-str)
@@ -39,6 +40,7 @@
          :clientId sess-id
          :username username})
 
+      ; The following events are sent only to the client who is subscribing (4th param true)
       (wamp/send-event! sess-id topic
         {:type  "user-list"
          :users (get-user-list topic)}
@@ -49,7 +51,28 @@
          :clientId 0
          :username "clj-wamp"
          :message  (str "Hello, *" username "*, welcome to clj-wamp chat! "
-                     "To change your username, click it in the \"Users\" list on the right.")} true))))
+                     "To change your username, click the orange name in the
+                     \"Users\" list on the right.")} true)
+
+      (timer/schedule-task 5000
+        ; Wrap with try in case client disconnects early
+        (try (wamp/send-event! sess-id topic
+               {:type     "message"
+                :clientId 0
+                :username "clj-wamp"
+                :message  "Type a message in the input below and hit enter to start chatting."}
+               true)
+          (catch IllegalArgumentException e nil)))
+
+      (timer/schedule-task 10000
+        (try (wamp/send-event! sess-id topic
+               {:type     "message"
+                :clientId 0
+                :username "clj-wamp"
+                :message  "To hide system messages (join, leave, etc.),
+                           click the button in the top right. Enjoy!"}
+               true)
+          (catch IllegalArgumentException e nil))))))
 
 (defn ws-on-unsubscribe
   "After unsubscribing from any topic"

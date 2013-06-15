@@ -1,5 +1,6 @@
 {% extends "clj_wamp_example/views/layout.html" %}
 {% block content %}
+
     <div class="row-fluid">
         <!-- Chat Messages Panel -->
         <div id="chat-panel">
@@ -10,7 +11,7 @@
                             ><i class="icon-comments-alt"></i></button></div>
                 <h1>Chat</h1>
             </header>
-            <div id="messages-wrap">
+            <div id="messages-wrap" class="scrollable">
                 <ul id="messages"></ul>
             </div>
             <!-- Message templates -->
@@ -36,7 +37,7 @@
             <header>
                 <h2>Users</h2>
             </header>
-            <div id="users-wrap">
+            <div id="users-wrap" class="scrollable">
                 <ul id="users"></ul>
             </div>
             <!-- User Templates -->
@@ -97,7 +98,7 @@
 
 {% block inline-script %}
 <script src="//autobahn.s3.amazonaws.com/js/autobahn.min.js"></script>
-<script>var WS_URI = "{{ws-uri}}";</script>
+<script> var WS_URI = "{{ws-uri}}"; </script>
 <script src="/js/chat.js"></script>
 {% endblock %}
 

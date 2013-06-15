@@ -1,0 +1,30 @@
+body > footer {
+    text-align: center;
+    padding: 30px 0;
+    margin-top: 70px;
+    border-top: 1px solid #e5e5e5;
+    background-color: #f5f5f5;
+}
+
+.hero-unit {
+    margin-top: 20px;
+    padding: 30px 30px 20px;
+}
+.hero-unit .lead {
+    margin-bottom: 40px;
+}
+.hero-unit h2 {
+    margin-bottom: 30px;
+}
+.hero-unit .btn-large {
+    margin-bottom: 20px;
+    font-size: 27px;
+}
+.hero-unit .btn-large span {
+    display: block;
+    margin: 10px 0;
+}
+
+blockquote > p {
+    margin-bottom: 10px;
+}
