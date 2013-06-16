@@ -1,35 +1,14 @@
 # clj-wamp-example
 
-FIXME: description
+An example Clojure WebSockets project using [clj-wamp](https://github.com/cgmartin/clj-wamp)
+and [http-kit](http://http-kit.org/). Powers the [cljwamp.us](http://cljwamp.us) website.
 
-## Installation
+Visit [cljwamp.us](http://cljwamp.us) for live demos and additional information.
 
-Download from http://example.com/FIXME.
-
-## Usage
-
-FIXME: explanation
-
-    $ java -jar clj-wamp-example-0.1.0-standalone.jar [args]
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+For information on the WAMP specification, visit [wamp.ws](http://wamp.ws).
 
 ## License
 
-Copyright © 2013 FIXME
+Copyright © 2013 Christopher Martin
 
 Distributed under the Eclipse Public License, the same as Clojure.

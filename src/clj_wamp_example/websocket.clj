@@ -54,7 +54,7 @@
                      "To change your username, click the orange name in the
                      \"Users\" list on the right.")} true)
 
-      ; TODO: better to cancel timers upon disconnect/unsubscribe
+      ; TODO: it would be better to cancel timers upon disconnect/unsubscribe
       (timer/schedule-task 5000
         (wamp/send-event! sess-id topic
           {:type     "message"
