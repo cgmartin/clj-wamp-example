@@ -16,7 +16,7 @@
                  [compojure "1.1.5"]
                  [clabango "0.5"]
                  [http-kit "2.1.3"]
-                 [clj-wamp "0.4.1"]]
+                 [clj-wamp "0.4.2"]]
   :profiles {:dev {:resource-paths ["dev-resources"]
                    :jvm-opts ["-Xmx1g" "-server"
                               "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"]}

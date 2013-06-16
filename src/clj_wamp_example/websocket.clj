@@ -54,25 +54,23 @@
                      "To change your username, click the orange name in the
                      \"Users\" list on the right.")} true)
 
+      ; TODO: better to cancel timers upon disconnect/unsubscribe
       (timer/schedule-task 5000
-        ; Wrap with try in case client disconnects early
-        (try (wamp/send-event! sess-id topic
-               {:type     "message"
-                :clientId 0
-                :username "clj-wamp"
-                :message  "Type a message in the input below and hit enter to start chatting."}
-               true)
-          (catch IllegalArgumentException e nil)))
+        (wamp/send-event! sess-id topic
+          {:type     "message"
+           :clientId 0
+           :username "clj-wamp"
+           :message  "Type a message in the input below and hit enter to start chatting."}
+          true))
 
       (timer/schedule-task 10000
-        (try (wamp/send-event! sess-id topic
-               {:type     "message"
-                :clientId 0
-                :username "clj-wamp"
-                :message  "To hide system messages (join, leave, etc.),
-                           click the button in the top right. Enjoy!"}
-               true)
-          (catch IllegalArgumentException e nil))))))
+        (wamp/send-event! sess-id topic
+          {:type     "message"
+           :clientId  0
+           :username  "clj-wamp"
+           :message   "To hide system messages (join, leave, etc.),
+                      click the button in the top right. Enjoy!"}
+          true)))))
 
 (defn ws-on-unsubscribe
   "After unsubscribing from any topic"
