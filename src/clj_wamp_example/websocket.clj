@@ -177,18 +177,18 @@
   "Returns a http-kit websocket handler with wamp subprotocol"
   [req]
   (http-kit/with-channel req channel
-    (if (:websocket? req)
+    (if-not (:websocket? req)
+      (http-kit/close channel)
       (wamp/http-kit-handler channel
         {:on-open        ws-on-open
          :on-close       ws-on-close
-         :on-call        {(rpc-url "echo")  (fn [v] v)
+         :on-call        {(rpc-url "echo")  identity
                           (rpc-url "throw") (fn [] (throw (Exception. "An exception")))
                           (rpc-url "calc")  rpc-calc}
          :on-subscribe   {(evt-url "chat")  ws-chat-subscribe?
                           :on-after         ws-on-subscribe}
          :on-publish     {(evt-url "chat")  ws-on-chat-publish}
-         :on-unsubscribe ws-on-unsubscribe})
-      (http-kit/close channel))))
+         :on-unsubscribe ws-on-unsubscribe}))))
 
 ;; Utilities
 
