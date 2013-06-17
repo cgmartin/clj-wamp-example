@@ -17,7 +17,10 @@ For the [Chat Demo](http://cljwamp.us/chat), take a look at the following files:
 
 For the [RPC Demo](http://cljwamp.us/rpc):
 
- * TODO
+ * [src/clj_wamp_example/views/rpc.html](https://github.com/cgmartin/clj-wamp-example/blob/master/src/clj_wamp_example/views/rpc.html)
+ * [src/clj_wamp_example/websocket.clj](https://github.com/cgmartin/clj-wamp-example/blob/master/src/clj_wamp_example/websocket.clj)
+ * [resources/public/js/rpc.js](https://github.com/cgmartin/clj-wamp-example/blob/master/resources/public/js/rpc.js)
+
 
 ## Technologies used
 
@@ -31,7 +34,7 @@ Server side:
 Client side:
 
  * [AutobahnJS](http://autobahn.ws/) - WAMP over WebSocket JavaScript client
- * [jQuery](http://jquery.com/) - Versatile JavaScript library
+ * [jQuery](http://jquery.com/) - A versatile JavaScript library
  * [Twitter Bootstrap](http://twitter.github.io/bootstrap/) - CSS framework
 
 ## License
