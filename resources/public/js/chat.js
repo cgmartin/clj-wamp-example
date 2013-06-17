@@ -4,6 +4,18 @@ var messageId = 0;
 
 // Initialize on load
 $(function() {
+
+    $('#error-modal').modal({ show: false, backdrop: 'static', keyboard: false });
+
+    if (! hasWebsockets()) {
+        $('#error-modal .reason').html(
+            "Sorry, your browser does not support WebSockets.<br>" +
+            "This demo will not work for you."
+        );
+        $('#error-modal').modal('show');
+        return;
+    }
+
     // Connect to WebSocket
     ab.connect(
         WS_URI,
@@ -61,8 +73,6 @@ $(function() {
         .on('shown', function() {
             $('#username').focus().select();
         });
-
-    $('#error-modal').modal({ show: false, backdrop: 'static', keyboard: false });
 
     // System messages toggle
     $('#hide-system-msgs-btn').button().click(toggleSystemMessages);
@@ -262,4 +272,22 @@ function toggleSystemMessages() {
     if (disabled) {
         scrollToBottom($('#messages-wrap'));
     }
+}
+
+// Thanks to Modernizr
+// https://github.com/Modernizr/Modernizr/blob/master/feature-detects/websockets/binary.js
+function hasWebsockets() {
+    var protocol = 'https:'==location.protocol?'wss':'ws',
+        protoBin;
+
+    if("WebSocket" in window) {
+        if( protoBin = "binaryType" in WebSocket.prototype ) {
+            return protoBin;
+        }
+        try {
+            return !!(new WebSocket(protocol+'://.').binaryType);
+        } catch (e){}
+    }
+
+    return false;
 }

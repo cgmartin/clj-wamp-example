@@ -4,6 +4,18 @@ var $calcDisplay;
 
 // Initialize on load
 $(function() {
+
+    $('#error-modal').modal({ show: false, backdrop: 'static', keyboard: false });
+
+    if (! hasWebsockets()) {
+        $('#error-modal .reason').html(
+            "Sorry, your browser does not support WebSockets.<br>" +
+                "This demo will not work for you."
+        );
+        $('#error-modal').modal('show');
+        return;
+    }
+
     $calcDisplay = $('#calcdisplay > div');
 
     // Connect to WebSocket
@@ -31,8 +43,6 @@ $(function() {
         // Options                                          Important!  vvvv
         {'maxRetries': 60, 'retryDelay': 30000, 'skipSubprotocolCheck': true}
     );
-
-    $('#error-modal').modal({ show: false, backdrop: 'static', keyboard: false });
 
     // Echo example
     $('#call-echo-form').submit(function (e) {
@@ -138,3 +148,21 @@ $(function() {
         calcClearFirst = true;
     });
 });
+
+// Thanks to Modernizr
+// https://github.com/Modernizr/Modernizr/blob/master/feature-detects/websockets/binary.js
+function hasWebsockets() {
+    var protocol = 'https:'==location.protocol?'wss':'ws',
+        protoBin;
+
+    if("WebSocket" in window) {
+        if( protoBin = "binaryType" in WebSocket.prototype ) {
+            return protoBin;
+        }
+        try {
+            return !!(new WebSocket(protocol+'://.').binaryType);
+        } catch (e){}
+    }
+
+    return false;
+}
