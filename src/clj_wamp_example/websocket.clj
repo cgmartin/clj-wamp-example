@@ -212,7 +212,7 @@
 
 (defn get-user-list [topic]
   (map (fn [id] {:clientId id, :username (get-username id)})
-    (wamp/topic-clients topic)))
+    (wamp/get-topic-clients topic)))
 
 (defn truncate-str [s, n]
   (apply str (take n s)))

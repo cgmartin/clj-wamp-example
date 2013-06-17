@@ -2,6 +2,14 @@
 .rpc-example .title { text-align: right; }
 .rpc-example .example, .rpc-example .errors { padding-top: 20px; }
 
+#calc {
+    padding: 5px; background-color: #444;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    border: 1px solid #444;
+}
+#calc table { margin-bottom: 0; }
 #calc td { background-color: #444; padding: 5px; border-top: 1px solid #444; }
 #calc button { font-size: 18px; font-weight: normal; }
 #calcdisplay { font-size: 22px; line-height: 22px; }

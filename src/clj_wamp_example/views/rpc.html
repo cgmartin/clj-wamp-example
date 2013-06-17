@@ -47,44 +47,46 @@
             <div class="span3 title">
                 <h2>Calculator</h2>
                 <p>
-                    Calls the server whenever an operation is clicked
+                    Calls the server whenever an operation is clicked and displays the result
                 </p>
             </div>
             <div class="span5 example">
-                <table id="calc" class="table table-condensed">
-                    <tr>
-                        <td id="calcdisplay" colspan="4"><div class="text-right">0</div></td>
-                    </tr>
-                    <tr><td colspan="4"></td></tr>
-                    <tr>
-                        <td colspan="2"><button id="calc_btn_clr" class="btn btn-block op">C</button></td>
-                        <td><button id="calc_btn_div" class="btn btn-block op">/</button></td>
-                        <td><button id="calc_btn_mul" class="btn btn-block op">*</button></td>
-                    </tr>
-                    <tr>
-                        <td><button id="calc_btn_7" class="btn btn-block digit">7</button></td>
-                        <td><button id="calc_btn_8" class="btn btn-block digit">8</button></td>
-                        <td><button id="calc_btn_9" class="btn btn-block digit">9</button></td>
-                        <td><button id="calc_btn_sub" class="btn btn-block op">-</button></td>
-                    </tr>
-                    <tr>
-                        <td><button id="calc_btn_4" class="btn btn-block digit">4</button></td>
-                        <td><button id="calc_btn_5" class="btn btn-block digit">5</button></td>
-                        <td><button id="calc_btn_6" class="btn btn-block digit">6</button></td>
-                        <td><button id="calc_btn_add" class="btn btn-block op">+</button></td>
-                    </tr>
-                    <tr>
-                        <td><button id="calc_btn_1" class="btn btn-block digit">1</button></td>
-                        <td><button id="calc_btn_2" class="btn btn-block digit">2</button></td>
-                        <td><button id="calc_btn_3" class="btn btn-block digit">3</button></td>
-                        <td rowspan="2"><button id="calc_btn_eq" class="btn btn-block op">=</button></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2"><button id="calc_btn_0" class="btn btn-block digit">0</button></td>
-                        <td><button id="calc_btn_pt" class="btn btn-block digit">.</button></td>
+                <div id="calc">
+                    <table class="table table-condensed">
+                        <tr>
+                            <td id="calcdisplay" colspan="4"><div class="text-right">0</div></td>
+                        </tr>
+                        <tr><td colspan="4"></td></tr>
+                        <tr>
+                            <td colspan="2"><button id="calc_btn_clr" class="btn btn-block op">C</button></td>
+                            <td><button id="calc_btn_div" class="btn btn-block op">/</button></td>
+                            <td><button id="calc_btn_mul" class="btn btn-block op">*</button></td>
+                        </tr>
+                        <tr>
+                            <td><button id="calc_btn_7" class="btn btn-block digit">7</button></td>
+                            <td><button id="calc_btn_8" class="btn btn-block digit">8</button></td>
+                            <td><button id="calc_btn_9" class="btn btn-block digit">9</button></td>
+                            <td><button id="calc_btn_sub" class="btn btn-block op">-</button></td>
+                        </tr>
+                        <tr>
+                            <td><button id="calc_btn_4" class="btn btn-block digit">4</button></td>
+                            <td><button id="calc_btn_5" class="btn btn-block digit">5</button></td>
+                            <td><button id="calc_btn_6" class="btn btn-block digit">6</button></td>
+                            <td><button id="calc_btn_add" class="btn btn-block op">+</button></td>
+                        </tr>
+                        <tr>
+                            <td><button id="calc_btn_1" class="btn btn-block digit">1</button></td>
+                            <td><button id="calc_btn_2" class="btn btn-block digit">2</button></td>
+                            <td><button id="calc_btn_3" class="btn btn-block digit">3</button></td>
+                            <td rowspan="2"><button id="calc_btn_eq" class="btn btn-block op">=</button></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><button id="calc_btn_0" class="btn btn-block digit">0</button></td>
+                            <td><button id="calc_btn_pt" class="btn btn-block digit">.</button></td>
 
-                    </tr>
-                </table>
+                        </tr>
+                    </table>
+                </div>
             </div>
             <div class="span4 errors">
                 <div class="alert alert-error hide" id="calc-errors"></div>
