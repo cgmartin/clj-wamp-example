@@ -13,3 +13,11 @@ body > footer {
 
 blockquote { margin: 30px 0; }
 blockquote > p { margin-bottom: 10px; }
+
+/* Error modal */
+#error-modal { color: #b94a48; border-color: #eed3d7; border-width: 2px;}
+#error-modal .modal-body, #error-modal .modal-header { background-color: #f2dede; border-color: #eed3d7; }
+
+@media (max-width: 767px) {
+    body > footer { margin-left: -20px; margin-right: -20px; }
+}

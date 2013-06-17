@@ -45,18 +45,17 @@
             <strong>Note:</strong> clj-wamp currently supports
             <a href="http://http-kit.org/">HTTP Kit</a> async servers only.
         </div>
-        <p><strong>clj-wamp</strong> provides a framework for websocket communication using the WAMP subprotocol
+        <p><strong>clj-wamp</strong> provides an interface layer for websocket communication using the WAMP subprotocol
             on the server-side.</p>
         <p>It should work with any <a href="http://wamp.ws/implementations">WAMP v1 enabled client</a>
             - The examples on this site use <a href="http://autobahn.ws/js">AutobahnJS</a>.</p>
 
         <h3>Installation</h3>
         <p>Add the following dependency to your <code>project.clj</code> file:</p>
-        <pre>[clj-wamp "0.4.2"]</pre>
+        <pre>[clj-wamp "0.5.0"]</pre>
 
         <h3>Usage</h3>
-        <p>Add clj-wamp's <code>http-kit-handler</code> to http-kit's <code>with-channel</code>,
-            and attach to the server (or to a route):</p>
+        <p>Add clj-wamp's <code>http-kit-handler</code> to http-kit's <code>with-channel</code>:</p>
         <script src="https://gist.github.com/cgmartin/5789742.js"></script>
 
         <p>See the docs for more information on the PubSub API and callback signatures.</p>

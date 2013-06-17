@@ -9,7 +9,7 @@
 
 ;; Topic BaseUrls
 (def ws-base-url "http://clj-wamp-example")
-(def rpc-base-url (str ws-base-url "/api#"))
+(def rpc-base-url (str ws-base-url "/rpc#"))
 (def evt-base-url (str ws-base-url "/event#"))
 
 (defn rpc-url [path] (str rpc-base-url path))
@@ -17,9 +17,40 @@
 
 ;; RPC functions
 
-(defn rpc-add [sess-id & params]
-  (log/debug "Websocket RPC [" sess-id "] Add: " params)
-  {:result (apply + params)})
+(def calc-state (atom {}))
+
+(defn- calc-op
+  "calculates the previously received value and operation
+   with the current value, and returns the result"
+  [sess-id op v]
+  (let [{last-val :last-val last-op :last-op} (@calc-state sess-id)
+        new-val (if last-op (last-op last-val v) v)]
+    (swap! calc-state assoc sess-id {:last-val new-val :last-op op})
+    new-val))
+
+(defn rpc-calc
+  "a simple calculator via rpc"
+  [op v]
+  (let [sess-id  wamp/*call-sess-id*
+        v        (Double. v)]
+    (log/debug "Websocket RPC [" sess-id "] Calc: " op v)
+    (try
+      (case op
+        "C" (do (swap! calc-state dissoc sess-id) 0)
+        "+" (calc-op sess-id + v)
+        "-" (calc-op sess-id - v)
+        "/" (calc-op sess-id / v)
+        "*" (calc-op sess-id * v)
+        "=" (let [v (calc-op sess-id nil v)]
+              (swap! calc-state dissoc sess-id) v)
+        ; default:
+        {:error {:uri "http://clj-wamp-example/error#calc"
+                 :message "Invalid Operation"}})
+
+      ; clear the calc-state on any exception and rethrow
+      (catch Exception e
+        (swap! calc-state dissoc sess-id)
+        (throw e)))))
 
 ;; PubSub Subscription Handlers
 
@@ -73,7 +104,8 @@
           true)))))
 
 (defn ws-on-unsubscribe
-  "After unsubscribing from any topic"
+  "After unsubscribing from any topic, notify other users and
+  clean up the stored username"
   [sess-id topic]
   (log/debug "Websocket unsubscribed [" sess-id "] " topic)
   (when (= topic (evt-url "chat"))
@@ -85,7 +117,8 @@
 ;; PubSub Event Message Handlers
 
 (defn on-chat-message
-  "When receiving a 'chat message', validate message"
+  "When receiving a 'chat message', validate/filter the message
+  and broker with additional info (username, clientId)"
   [sess-id topic event exclude eligible]
   ; Ignore empty messages
   (when (> (count (event "message")) 0)
@@ -101,7 +134,8 @@
       [sess-id topic event exclude eligible])))
 
 (defn on-chat-username
-  "When receivomg a username changed event, validate username"
+  "When receiving a username changed event, validate username
+  and broker with additional info (oldUsername, clientId)"
   [sess-id topic event exclude eligible]
   ; Ignore empty names
   (when (> (count (event "newUsername")) 0)
@@ -121,7 +155,7 @@
         [sess-id topic event exclude eligible]))))
 
 (defn ws-on-chat-publish
-  "When publish events are received in the 'chat' topic"
+  "handles all publish events that are received in the 'chat' topic"
   [sess-id topic event exclude eligible]
   (log/debug "Websocket publish [" sess-id "] " topic event)
   (when-let [event-type (event "type")]
@@ -136,6 +170,7 @@
   (log/debug "New websocket client connected [" sess-id "]"))
 
 (defn ws-on-close [sess-id status]
+  (swap! calc-state dissoc sess-id) ; clean up old state
   (log/debug "Websocket client disconnected [" sess-id "] " status))
 
 (defn wamp-websocket-handler
@@ -146,10 +181,12 @@
       (wamp/http-kit-handler channel
         {:on-open        ws-on-open
          :on-close       ws-on-close
-         :on-call        {(rpc-url "add")  rpc-add}
-         :on-subscribe   {(evt-url "chat") ws-chat-subscribe?
-                          :on-after        ws-on-subscribe}
-         :on-publish     {(evt-url "chat") ws-on-chat-publish}
+         :on-call        {(rpc-url "echo")  (fn [v] v)
+                          (rpc-url "throw") (fn [] (throw (Exception. "An exception")))
+                          (rpc-url "calc")  rpc-calc}
+         :on-subscribe   {(evt-url "chat")  ws-chat-subscribe?
+                          :on-after         ws-on-subscribe}
+         :on-publish     {(evt-url "chat")  ws-on-chat-publish}
          :on-unsubscribe ws-on-unsubscribe})
       (http-kit/close channel))))
 

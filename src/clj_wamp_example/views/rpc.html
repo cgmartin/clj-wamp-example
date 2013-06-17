@@ -2,12 +2,105 @@
 {% block content %}
     <div class="container">
         <h1>RPC Demo</h1>
-        <p>TODO</p>
+
+        <!-- Echo example -->
+        <div class="row-fluid rpc-example">
+            <div class="span3 title">
+                <h2>Echo</h2>
+                <p>
+                    Server will echo user input back to the client
+                </p>
+            </div>
+            <div class="span5 example">
+                <form id="call-echo-form" class="form form-inline">
+                    <input type="text" id="call-echo-input" name="message"
+                           placeholder="Type something..." autofocus maxlength="140">
+                    <button type="submit" class="btn">Send</button>
+                </form>
+                <div id="call-echo-output" class="alert alert-success hide"></div>
+            </div>
+            <div class="span4 errors">
+                <div class="alert alert-error hide" id="echo-errors"></div>
+            </div>
+        </div>
+
+        <!-- Error example -->
+        <div class="row-fluid rpc-example">
+            <div class="span3 title">
+                <h2>Error Handling</h2>
+                <p>
+                    clj-wamp will automatically return errors
+                    when a call is not found or when exceptions are thrown
+                </p>
+            </div>
+            <div class="span4 example">
+                <button id="err-not-found-btn" class="btn btn-block">Call not found</button>
+                <button id="err-exception-btn" class="btn btn-block">Throw Exception</button>
+            </div>
+            <div class="span4 offset1 errors">
+                <div class="alert alert-error hide" id="error-errors"></div>
+            </div>
+        </div>
+
+        <!-- Calculator example -->
+        <div class="row-fluid rpc-example">
+            <div class="span3 title">
+                <h2>Calculator</h2>
+                <p>
+                    Calls the server whenever an operation is clicked
+                </p>
+            </div>
+            <div class="span5 example">
+                <table id="calc" class="table table-condensed">
+                    <tr>
+                        <td id="calcdisplay" colspan="4"><div class="text-right">0</div></td>
+                    </tr>
+                    <tr><td colspan="4"></td></tr>
+                    <tr>
+                        <td colspan="2"><button id="calc_btn_clr" class="btn btn-block op">C</button></td>
+                        <td><button id="calc_btn_div" class="btn btn-block op">/</button></td>
+                        <td><button id="calc_btn_mul" class="btn btn-block op">*</button></td>
+                    </tr>
+                    <tr>
+                        <td><button id="calc_btn_7" class="btn btn-block digit">7</button></td>
+                        <td><button id="calc_btn_8" class="btn btn-block digit">8</button></td>
+                        <td><button id="calc_btn_9" class="btn btn-block digit">9</button></td>
+                        <td><button id="calc_btn_sub" class="btn btn-block op">-</button></td>
+                    </tr>
+                    <tr>
+                        <td><button id="calc_btn_4" class="btn btn-block digit">4</button></td>
+                        <td><button id="calc_btn_5" class="btn btn-block digit">5</button></td>
+                        <td><button id="calc_btn_6" class="btn btn-block digit">6</button></td>
+                        <td><button id="calc_btn_add" class="btn btn-block op">+</button></td>
+                    </tr>
+                    <tr>
+                        <td><button id="calc_btn_1" class="btn btn-block digit">1</button></td>
+                        <td><button id="calc_btn_2" class="btn btn-block digit">2</button></td>
+                        <td><button id="calc_btn_3" class="btn btn-block digit">3</button></td>
+                        <td rowspan="2"><button id="calc_btn_eq" class="btn btn-block op">=</button></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><button id="calc_btn_0" class="btn btn-block digit">0</button></td>
+                        <td><button id="calc_btn_pt" class="btn btn-block digit">.</button></td>
+
+                    </tr>
+                </table>
+            </div>
+            <div class="span4 errors">
+                <div class="alert alert-error hide" id="calc-errors"></div>
+            </div>
+        </div>
     </div>
+
+    {% include "clj_wamp_example/views/error-modal.html" %}
 {% endblock %}
 
 {% block inline-script %}
-<script>
-    var foo = 'bar';
-</script>
+<script src="//autobahn.s3.amazonaws.com/js/autobahn.min.js"></script>
+<script> var WS_URI = "{{ws-uri}}"; </script>
+<script src="/js/rpc.js"></script>
+{% endblock %}
+
+{% block head-style %}
+<link href="/css/rpc.css" rel="stylesheet">
 {% endblock %}

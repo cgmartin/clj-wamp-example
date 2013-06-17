@@ -1,0 +1,14 @@
+.rpc-example { border-top: 1px solid #e5e5e5; margin-top: 20px; }
+.rpc-example .title { text-align: right; }
+.rpc-example .example, .rpc-example .errors { padding-top: 20px; }
+
+#calc td { background-color: #444; padding: 5px; border-top: 1px solid #444; }
+#calc button { font-size: 18px; font-weight: normal; }
+#calcdisplay { font-size: 22px; line-height: 22px; }
+#calcdisplay > div { background-color: #c3cba6; padding: 5px;   }
+#calc_btn_eq { padding-top: 24px; padding-bottom: 24px; }
+
+
+@media (max-width: 767px) {
+    .rpc-example .title { text-align: left; }
+}
