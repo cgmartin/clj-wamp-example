@@ -28,8 +28,6 @@ $(function() {
             sess.prefix("rpc", "http://clj-wamp-example/rpc#");
 
             $('#error-modal').modal('hide');
-            // Enable below to show the change username modal upon connection
-            //setTimeout(function () { $('#change-username-modal').modal('show'); }, 500);
         },
         // Disconnection callback
         function (code, reason) {
@@ -52,14 +50,15 @@ $(function() {
             $echoErrors = $('#echo-errors');
 
         if (msg.length > 0) {
-            // Publish a chat message
+            console.log("rpc:echo SND", msg);
             sess.call("rpc:echo", msg).then(
                 function (res) {
                     $echoErrors.hide();
                     $msgOutput.show().text('Server says, "' + res + '"');
+                    console.log("rpc:echo RCV", res);
                 },
                 function (res) {
-                    console.log("Echo error", res);
+                    console.log("rpc:echo RCV error", res);
                     $msgOutput.hide();
                     $echoErrors.show()
                         .text("[" + res.desc.toUpperCase() + "] " + res.detail);
@@ -74,24 +73,26 @@ $(function() {
     // Error examples
     var $errorErrors = $('#error-errors');
     $('#err-not-found-btn').click(function() {
+        console.log("rpc:not-found SND");
         sess.call("rpc:not-found").then(
             function (res) {
-                console.log(res); // this shouldn't happen
+                console.log("rpc:not-found RCV", res); // this shouldn't happen
             },
             function (res) {
-                console.log("Not found error", res);
+                console.log("rpc:not-found RCV error", res);
                 $errorErrors.show()
                     .text("[" + res.desc.toUpperCase() + "] " + res.detail);
             }
         );
     });
     $('#err-exception-btn').click(function() {
+        console.log("rpc:throw SND");
         sess.call("rpc:throw").then(
             function (res) {
-                console.log(res); // this shouldn't happen
+                console.log("rpc:throw RCV", res); // this shouldn't happen
             },
             function (res) {
-                console.log("Exception error", res);
+                console.log("rpc:throw RCV error", res);
                 $errorErrors.show()
                     .text("[" + res.desc.toUpperCase() + "] " + res.detail);
             }
@@ -132,12 +133,14 @@ $(function() {
         }
         $('#calc-errors').hide();
 
+        console.log("rpc:calc SND", op, val);
         sess.call("rpc:calc", op, val).then(
             function (res) {
+                console.log("rpc:calc RCV", res);
                 $calcDisplay.text(res);
             },
             function (res) {
-                console.log("Calc error", res);
+                console.log("rpc:calc RCV error", res);
                 $calcDisplay.text('Error');
                 $('#calc-errors')
                     .show()

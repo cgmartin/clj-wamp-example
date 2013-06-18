@@ -49,7 +49,9 @@ $(function() {
 
         if (chatMsg.length > 0) {
             // Publish a chat message
-            sess.publish("event:chat", { type: 'message', message: chatMsg });
+            var event = { type: 'message', message: chatMsg };
+            console.log("event:chat SND", event);
+            sess.publish("event:chat", event);
         }
 
         $msgInput.val(''); // Clear message after sending
@@ -82,7 +84,7 @@ $(function() {
 // Handle WebSocket/WAMP Events
 
 function onEvent(topic, event) {
-    console.log("Received event", topic, event);
+    console.log("event:chat RCV", event);
     switch (event.type) {
         case 'message':
             notifyChatMessage(event.clientId, event.username, event.message);
@@ -227,7 +229,9 @@ function resetUserList(users) {
 
 function changeUsername(newUsername) {
     if (newUsername != currentUsername) {
-        sess.publish("event:chat", { type: 'username', newUsername: newUsername });
+        var event = { type: 'username', newUsername: newUsername };
+        console.log("event:chat SND", event);
+        sess.publish("event:chat", event);
     }
 }
 

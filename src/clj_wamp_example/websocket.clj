@@ -72,36 +72,37 @@
          :username username})
 
       ; The following events are sent only to the client who is subscribing (4th param true)
-      (wamp/send-event! sess-id topic
+      (wamp/emit-event! topic
         {:type  "user-list"
          :users (get-user-list topic)}
-        true)
+        sess-id)
 
-      (wamp/send-event! sess-id topic
+      (wamp/emit-event! topic
         {:type     "message"
          :clientId 0
          :username "clj-wamp"
          :message  (str "Hello, *" username "*, welcome to clj-wamp chat! "
                      "To change your username, click the orange name in the
-                     \"Users\" list on the right.")} true)
+                     \"Users\" list on the right.")}
+        sess-id)
 
       ; TODO: it would be better to cancel timers upon disconnect/unsubscribe
       (timer/schedule-task 5000
-        (wamp/send-event! sess-id topic
+        (wamp/emit-event! topic
           {:type     "message"
            :clientId 0
            :username "clj-wamp"
            :message  "Type a message in the input below and hit enter to start chatting."}
-          true))
+          sess-id))
 
       (timer/schedule-task 10000
-        (wamp/send-event! sess-id topic
+        (wamp/emit-event! topic
           {:type     "message"
            :clientId  0
            :username  "clj-wamp"
            :message   "To hide system messages (join, leave, etc.),
                       click the button in the top right. Enjoy!"}
-          true)))))
+          sess-id)))))
 
 (defn ws-on-unsubscribe
   "After unsubscribing from any topic, notify other users and
