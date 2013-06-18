@@ -81,7 +81,7 @@ $(function() {
             function (res) {
                 console.log("rpc:not-found RCV error", res);
                 $errorErrors.show()
-                    .text("[" + res.desc.toUpperCase() + "] " + res.detail);
+                    .text("[" + res.desc.toUpperCase() + "] ");
             }
         );
     });

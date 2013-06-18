@@ -40,14 +40,16 @@
             </blockquote>
         </div>
 
-        <h2>Overview</h2>
         <div class="lead alert text-center">
-            <strong>Note:</strong> clj-wamp currently supports
-            <a href="http://http-kit.org/">HTTP Kit</a> async servers only.
+            <strong>BETA software, still under development</strong>
         </div>
+
+        <h2>Overview</h2>
         <div class="lead">
-            <p><strong>clj-wamp</strong> provides an interface layer for websocket communication using the WAMP subprotocol
-                on the server-side. Compose a map of RPC and/or event callbacks and you're good to go.</p>
+            <p><strong>clj-wamp</strong> provides an interface for WAMP websocket messaging
+                on the server-side with <a href="http://http-kit.org/">HTTP Kit</a>.</p>
+            <p>Compose <a href="/doc/clj-wamp.server.html#var-http-kit-handler">a map</a>
+                of RPC and/or PubSub callbacks, and you're good to go.</p>
             <p>It should work with any <a href="http://wamp.ws/implementations">WAMP v1 enabled client</a>.
                The examples on this site use <a href="http://autobahn.ws/js">AutobahnJS</a>.</p>
         </div>
@@ -57,10 +59,10 @@
         <pre>[clj-wamp "1.0.0-beta1"]</pre>
 
         <h3>Usage</h3>
-        <p>Add clj-wamp's <code>http-kit-handler</code> to http-kit's <code>with-channel</code>:</p>
+        <p>Run clj-wamp's <code>http-kit-handler</code> within http-kit's <code>with-channel</code> context:</p>
         <script src="https://gist.github.com/cgmartin/5789742.js"></script>
 
-        <p>See the docs for more information on the PubSub API and callback signatures.</p>
+        <p>See <a href="/doc/index.html">the docs</a> for more information on the PubSub API and callback signatures.</p>
     </div>
 {% endblock %}
 

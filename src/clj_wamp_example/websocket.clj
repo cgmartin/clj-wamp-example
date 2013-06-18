@@ -87,7 +87,7 @@
         sess-id)
 
       ; TODO: it would be better to cancel timers upon disconnect/unsubscribe
-      (timer/schedule-task 5000
+      (timer/schedule-task 3000
         (wamp/emit-event! topic
           {:type     "message"
            :clientId 0
@@ -95,7 +95,7 @@
            :message  "Type a message in the input below and hit enter to start chatting."}
           sess-id))
 
-      (timer/schedule-task 10000
+      (timer/schedule-task 6000
         (wamp/emit-event! topic
           {:type     "message"
            :clientId  0
