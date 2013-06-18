@@ -26,21 +26,24 @@ $(function() {
             sess = session;
             console.log("Connected to " + WS_URI, sess.sessionid());
             sess.prefix("rpc", "http://clj-wamp-example/rpc#");
-
             $('#error-modal').modal('hide');
         },
         // Disconnection callback
         function (code, reason) {
             sess = null;
-            console.log("Connection lost (" + reason + ")");
+            console.log("Connection lost", code, reason);
 
-            $('#error-modal .reason').text(reason);
-            $('#error-modal').modal('show');
+            if (code != 0) { // ignore app disconnects
+                $('#error-modal .reason').text(reason);
+                $('#error-modal').modal('show');
+            }
         },
         //          Http-kit does not currently support sub-protocol headers
         // Options                                          Important!  vvvv
         {'maxRetries': 60, 'retryDelay': 30000, 'skipSubprotocolCheck': true}
     );
+
+
 
     // Echo example
     $('#call-echo-form').submit(function (e) {

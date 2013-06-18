@@ -34,8 +34,11 @@ $(function() {
             sess = null;
             console.log("Connection lost (" + reason + ")");
             $('#change-username-modal').modal('hide');
-            $('#error-modal .reason').text(reason);
-            $('#error-modal').modal('show');
+
+            if (code != 0) {  // ignore app disconnects
+                $('#error-modal .reason').text(reason);
+                $('#error-modal').modal('show');
+            }
         },
         //          Http-kit does not currently support sub-protocol headers
         // Options                                          Important!  vvvv
