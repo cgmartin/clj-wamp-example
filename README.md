@@ -21,6 +21,17 @@ For the [RPC Demo](http://cljwamp.us/rpc):
  * [src/clj_wamp_example/websocket.clj](https://github.com/cgmartin/clj-wamp-example/blob/master/src/clj_wamp_example/websocket.clj)
  * [resources/public/js/rpc.js](https://github.com/cgmartin/clj-wamp-example/blob/master/resources/public/js/rpc.js)
 
+## Install and Run
+
+Clone project and run via leiningen:
+```bash
+% git clone https://github.com/cgmartin/clj-wamp-example.git
+% cd clj-wamp-example
+% lein run
+```
+
+...and point browser to http://localhost:8080
+
 
 ## Technologies used
 
