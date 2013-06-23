@@ -168,17 +168,17 @@
 ;; Main http-kit/WAMP WebSocket handler
 
 (defn ws-on-open [sess-id]
-  (log/debug "New websocket client connected [" sess-id "]"))
+  (log/info "New websocket client connected [" sess-id "] Num:" (count @usernames)))
 
 (defn ws-on-close [sess-id status]
   (swap! calc-state dissoc sess-id) ; clean up old state
-  (log/debug "Websocket client disconnected [" sess-id "] " status))
+  (log/info "Websocket client disconnected [" sess-id "] " status))
 
-(defn wamp-websocket-handler
+(defn wamp-handler
   "Returns a http-kit websocket handler with wamp subprotocol"
   [req]
   (http-kit/with-channel req channel
-    (if-not (:websocket? req)
+    (if-not (http-kit/websocket? channel)
       (http-kit/close channel)
       (wamp/http-kit-handler channel
         {:on-open        ws-on-open

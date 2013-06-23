@@ -1,4 +1,4 @@
-(defproject clj-wamp-example "0.1.0"
+(defproject clj-wamp-example "0.2.0"
   :description "An example http-kit websocket project with clj-wamp"
   :url "https://github.com/cgmartin/clj-wamp-example"
   :license {:name "Eclipse Public License"
@@ -17,9 +17,10 @@
                  [clabango "0.5"]
                  [http-kit "2.1.3"]
                  [clj-wamp "1.0.0-beta1"]]
-  :profiles {:dev {:resource-paths ["dev-resources"]
+  :profiles {:dev {:resource-paths ["resources-dev"]
+                   :dependencies [[org.clojure/tools.namespace "0.2.3"]]
                    :jvm-opts ["-Xmx1g" "-server"
                               "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"]}
              :1.4 {:dependencies [[org.clojure/clojure "1.4.0"]]}
-             :production {:resource-paths ["prod-resources"]}}
-  :main clj-wamp-example.server)
+             :production {:resource-paths ["resources-prod"]}}
+  :main clj-wamp-example.main)
