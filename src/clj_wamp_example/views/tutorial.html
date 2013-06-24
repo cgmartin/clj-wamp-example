@@ -140,8 +140,8 @@ wamptutorial
                             <li>pluggable promises/deferreds
                         </ul></p>
 
-                    <p>You specify the WAMP server URI, options, and connect/disconnect
-                        callbacks.</p>
+                    <p>To connect to a WAMP WebSocket server, specify the server URI, options, and connect/disconnect
+                        callbacks:</p>
 
 <pre>
 ab.connect(
@@ -162,8 +162,8 @@ ab.connect(
 </pre>
 
                     <p>On connect, the AutobahnJS library will automatically process
-                        the WELCOME message. The session ID is stored in the session object,
-                        and can be retrieved via <code>sess.sessionid()</code></p>
+                        the <code>WELCOME</code> message. The session ID is stored in the session object,
+                        and can be retrieved via <code>sess.sessionid()</code>.</p>
                 </section>
 
                 <section id="clojureserver">
