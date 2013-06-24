@@ -41,7 +41,7 @@
         </div>
 
         <div class="lead alert text-center">
-            <strong>BETA software, still under development</strong>
+            <strong>BETA software, under development</strong>
         </div>
 
         <h2>Overview</h2>
@@ -55,13 +55,17 @@
         </div>
 
         <h3>Installation</h3>
-        <p>Add the following dependency to your <code>project.clj</code> file:</p>
+        <p>Add the following dependency to your existing <code>project.clj</code> file:</p>
         <pre>[clj-wamp "1.0.0-beta1"]</pre>
+
+        <p>...Or create a new clj-wamp starter project from scratch:</p>
+        <pre>% lein new clj-wamp my-project-name</pre>
 
         <h3>Usage</h3>
         <p>Run clj-wamp's <code>http-kit-handler</code> within http-kit's <code>with-channel</code> context:</p>
         <script src="https://gist.github.com/cgmartin/5789742.js"></script>
 
+        <p>For a walk-thru of some simple examples, see <a href="/tutorial">the tutorial</a>.</p>
         <p>See <a href="/doc/index.html">the docs</a> for more information on the PubSub API and callback signatures.</p>
     </div>
 {% endblock %}

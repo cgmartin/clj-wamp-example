@@ -2,7 +2,7 @@
   (:use [clojure.tools.logging :only [info]])
   (:require [clojure.java.io :as io]))
 
-(def ^:private config (atom nil))
+(defonce ^:private config (atom nil))
 
 (defn read-conf
   "returns a parsed application config from resources directory"

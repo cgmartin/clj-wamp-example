@@ -23,7 +23,8 @@
 (def ws-uri (:ws-uri (conf)))
 
 (defroutes server-routes*
-  (GET "/"     [:as req] (render req "home.html"))
+  (GET "/"         [:as req] (render req "home.html"))
+  (GET "/tutorial" [:as req] (render req "tutorial.html"))
   (GET "/chat" [:as req] (render req "chat.html" {:title "Chat Example"
                                                   :ws-uri ws-uri}))
   (GET "/rpc"  [:as req] (render req "rpc.html"  {:title "RPC Example"
@@ -43,14 +44,6 @@
         (log/error e "error handling request" req)
         ;; FIXME provide a better page for 500 here
         {:status 500 :body "Sorry, an error occured."}))))
-
-(defn wrap-dir-index
-  "Rewrite requests of / to /index.html"
-  [handler]
-  (fn [req]
-    (handler
-      (update-in req [:uri]
-        #(if (= "/" %) "/index.html" %)))))
 
 (defn app [] (-> #'server-routes*
               wrap-session

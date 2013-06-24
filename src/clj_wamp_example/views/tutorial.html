@@ -1,0 +1,307 @@
+{% extends "clj_wamp_example/views/layout.html" %}
+{% block content %}
+    <div class="container">
+        <div class="row-fluid">
+            <div class="span3">
+                <ul id="toc" class="nav nav-list toc affix hidden-phone">
+                    <li class="active"><a href="#getstarted"><i class="icon-chevron-right"></i> Get Started</a></li>
+                    <li><a href="#wampoverview"><i class="icon-chevron-right"></i> WAMP Overview</a></li>
+                    <li><a href="#projectstructure"><i class="icon-chevron-right"></i> Project Structure</a></li>
+                    <li><a href="#javascriptclient"><i class="icon-chevron-right"></i> JavaScript Client</a></li>
+                    <li><a href="#clojureserver"><i class="icon-chevron-right"></i> Clojure Server</a></li>
+                    <li><a href="#wamppubsub"><i class="icon-chevron-right"></i> WAMP PubSub</a></li>
+                    <li><a href="#wamprpc"><i class="icon-chevron-right"></i> WAMP RPC</a></li>
+                </ul>
+            </div>
+
+            <div id="tutorial" class="span9">
+                <section id="overview">
+                    <div class="page-header">
+                        <h1>Tutorial</h1>
+                    </div>
+                    <p class="lead">This guide walks through the basics of clj-wamp and the
+                        <a href="http://wamp.ws/spec">WAMP subprotocol</a>.</p>
+
+                </section>
+
+                <section id="getstarted">
+                    <h2>Get Started</h2>
+
+                    <p>Let's create a new clj-wamp project from scratch so you can
+                        see it in action.</p>
+
+                    <p class="alert alert-info">The guide assumes you already have
+                        <a href="http://www.java.com/en/download/help/download_options.xml">java</a> and
+                        <a href="https://github.com/technomancy/leiningen">leiningen</a> installed
+                        on your system.</p>
+
+                    <p>From the command line, run the following commands:</p>
+<pre>
+% lein new clj-wamp wamptutorial
+Created new clj-wamp project: wamptutorial
+
+% cd wamptutorial
+% lein run
+</pre>
+                    <p>...and point your browser to
+                        <a href="http://localhost:8080">localhost:8080</a>, where you'll see:</p>
+
+                    <p><img class="img-polaroid" src="/img/clj-wamp-template-screencap.png"></p>
+
+                    <p>Open your browser's web developer console, and click the buttons.</p>
+
+                    <p>You should see console debug messages of the calls being sent and events
+                    received.</p>
+
+                    <img class="img-polaroid" src="/img/template-console-screencap.png">
+                </section>
+
+                <section id="wampoverview">
+                    <h2>WAMP Overview</h2>
+
+                    <p>You'll have a better idea of what's happening if we take a quick
+                        look at the WAMP protocol itself...</p>
+
+                    <p>The WAMP specification defines <span class="badge badge-info">9</span>
+                        types of messages that are used between client and server.
+                        They are categorized into 3 groups:
+                        <strong>Auxiliary</strong>, <strong>RPC</strong>, and
+                        <strong>PubSub</strong></p>
+
+                    <table class="table">
+                        <thead><tr>
+                            <th>Message</th><th>Type ID</th><th>Direction</th><th>Category</th>
+                        </tr></thead>
+                        <tbody>
+                            <tr><td>WELCOME</td><td>0</td><td>Server-to-client</td><td>Auxiliary</td></tr>
+                            <tr><td>PREFIX</td><td>1</td><td>Client-to-server</td><td>Auxiliary</td></tr>
+                            <tr><td>CALL</td><td>2</td><td>Client-to-server</td><td>RPC</td></tr>
+                            <tr><td>CALLRESULT</td><td>3</td><td>Server-to-client</td><td>RPC</td></tr>
+                            <tr><td>CALLERROR</td><td>4</td><td>Server-to-client</td><td>RPC</td></tr>
+                            <tr><td>SUBSCRIBE</td><td>5</td><td>Client-to-server</td><td>PubSub</td></tr>
+                            <tr><td>UNSUBSCRIBE</td><td>6</td><td>Client-to-server</td><td>PubSub</td></tr>
+                            <tr><td>PUBLISH</td><td>7</td><td>Client-to-server</td><td>PubSub</td></tr>
+                            <tr><td>EVENT</td><td>8</td><td>Server-to-client</td><td>PubSub</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p>All WAMP messages are transmitted as JSON UTF-8 encoded strings
+                        to/from the server.</p>
+                    <p>For example, here is a WELCOME message that the server sends to the
+                        client once a connection has been established:</p>
+
+
+                    <pre>[0,"1372019248579-1",1,"clj-wamp/1.0.0-beta1"]</pre>
+                    <p>Which is defined as:</p>
+                    <pre>[ TYPE_ID_WELCOME , sessionId , protocolVersion, serverIdent ]</pre>
+
+                    <p>For more details on the WAMP specification, check out the
+                        <a href="http://wamp.ws/spec">WAMP.ws documentation</a>. It's good stuff.</p>
+
+                    <p>We will cover some of the message types later in the tutorial.</p>
+                </section>
+
+                <section id="projectstructure">
+                    <h2>Project Structure</h2>
+
+                    <p>The clj-wamp new project template generates several files, but only
+                        two files really apply to this tutorial:</p>
+                    <p>The JavaScript client: <code>resources/public/index.html</code></p>
+                    <p>and the Clojure server: <code>src/wamptutorial/websocket.clj</code></p>
+
+<pre>
+wamptutorial
+├── README.md
+├── project.clj
+├── resources
+│   └── public
+│       └── index.html     <- *client*
+├── resources-dev
+│   ├── config.clj
+│   └── log4j.properties
+└── src
+    └── wamptutorial
+        ├── config.clj
+        ├── main.clj
+        ├── routes.clj
+        └── websocket.clj  <- *server*
+</pre>
+                </section>
+
+                <section id="javascriptclient">
+                    <h2>JavaScript Client</h2>
+
+                    <p>The meat of the client code is
+                        the <a href="http://autobahn.ws/js">AutobahnJS</a>
+                        JavaScript library for WAMP WebSocket communication.</p>
+
+                    <p>AutobahnJS has some neat features, like:
+                        <ul><li>flexible, automatic reconnect
+                            <li>pluggable promises/deferreds
+                        </ul></p>
+
+                    <p>You specify the WAMP server URI, options, and connect/disconnect
+                        callbacks.</p>
+
+<pre>
+ab.connect(
+    // WAMP server
+    'ws://wamp-server-uri',
+
+    // on connect
+    function (sess) { ... },
+
+    // on disconnect
+    function (code, reason) { ... },
+
+    // options
+    {'maxRetries': 60,
+     'retryDelay': 30000,
+     'skipSubprotocolCheck': true}
+);
+</pre>
+
+                    <p>On connect, the AutobahnJS library will automatically process
+                        the WELCOME message. The session ID is stored in the session object,
+                        and can be retrieved via <code>sess.sessionid()</code></p>
+                </section>
+
+                <section id="clojureserver">
+                    <h2>Clojure Server</h2>
+
+                    <p>The server uses clj-wamp's <code>http-kit-handler</code> to define
+                        callbacks for the open, close, call, and pubsub events.</p>
+                    <p>This <code>wamp-handler</code> attaches to a
+                        <a href="https://github.com/weavejester/compojure">Compojure</a>
+                        route in <code>src/wamptutorial/routes.clj</code>, which provides
+                        the WebSocket endpoint: <code>ws://localhost:8080/ws</code></p>
+
+                    <script src="https://gist.github.com/cgmartin/5846725.js"></script>
+
+                    <p>Now that you've gotten a high-level overview of everything, let's
+                        take a closer look into WAMP's two primary message categories:
+                        <strong>PubSub</strong> and <strong>RPC</strong></p>
+                </section>
+
+                <section id="wamppubsub">
+                    <h2>WAMP PubSub</h2>
+
+                    <p>The following is a basic example of PubSub events with clj-wamp, where
+                        the server relays all <code>PUBLISH</code> messages to subscribed clients, as-is.</p>
+
+                    <p>In the client, during connection of the WebSocket, we will:
+                        <ul>
+                            <li>register a new topic prefix <code>event</code> for pubsub events
+                            <li>subscribe a handler for <code>event:chat</code> events:
+                        </ul></p>
+
+                    <script src="https://gist.github.com/cgmartin/5847644.js"></script>
+
+                    <p>...and upon click of the chat button, a <code>PUBLISH</code> message
+                        will be sent to the server and broadcast out to all subscribed
+                        clients. Open up an additional browser window and watch the events
+                        be delivered to both.</p>
+
+                    <p>The <code>PREFIX</code> message allows for the fully qualified topic URI
+                        to be aliased/shortened, for convenience to developers and to reduce
+                        communication volume. See the
+                        <a href="http://wamp.ws/spec#prefix_message">PREFIX Message docs @ WAMP.ws</a> for more info.</p>
+
+                    <p>Taking a look at the server code:</p>
+
+                    <script src="https://gist.github.com/cgmartin/5847676.js"></script>
+
+                    <p>The boolean in the :on-subscribe map
+                        <code>{(evt-url "chat") true}</code> tells clj-wamp to allow all clients to subscribe
+                        to this topic.</p>
+                    <p>Similarly, the boolean in the :on-publish map tells clj-wamp to relay all
+                        received messages to subscribed clients.</p>
+
+                    <p class="alert alert-info">
+                        <strong>Note:</strong>
+                        You can also use a callback function, instead of a boolean, to restrict
+                        certain clients from subscribing, or to broker/rewrite messages that are published.<br><br>
+                        See the
+                        <a href="/doc/clj-wamp.server.html#var-http-kit-handler">API docs</a>
+                        for more information, specifically the <code>on-subscribe-fn?</code>
+                        and <code>on-publish-fn</code> callbacks.</p>
+
+                    <p>In our example, if we were to trace the PubSub messages from the client to
+                        the server and back again, we would see the following order of events:</p>
+
+                    <p><ol>
+                        <li>Client sends a <code>SUBSCRIBE</code> message to the server:
+                            <code>[5,"event:chat"]</code></li>
+                        <li>Server receives the <code>SUBSCRIBE</code> message, and adds the
+                            client to its internal list of subscribers on the "event:chat" topic.</li>
+                        <li>Client sends a <code>PUBLISH</code> message to the server:
+                            <code>[7,"event:chat","foo"]</code> [via <code>sess.publish("event:chat", "foo");</code>]</li>
+                        <li>Server receives the <code>PUBLISH</code> message and checks it's map for a topic match.
+                            Since there is a match with a value of <code>true</code>, the server
+                            allows the <code>EVENT</code> message to be sent to all subscribed clients:
+                            <code>[8,"http://wamptutorial/event#chat","foo"]</code></li>
+                        <li>Client receives the <code>EVENT</code> message (since it's subscribed), and the
+                            <code>onChatEvent</code> JS handler is called.</li>
+                    </ol></p>
+
+                    <div class="alert alert-info">
+                        <p>Also note that during a client-side publish, you have
+                            <a href="http://autobahn.ws/js/reference#Session_publish">additional options</a> for:</p>
+                        <ul>
+                            <li>Excluding the client itself (or a list of clients) from receiving the message.</li>
+                            <li>Targeting a specific list of clients who will receive the message while others will not.</li>
+                        </ul></div>
+                </section>
+
+                <section id="wamprpc">
+                    <h2>WAMP Remote Procedure Calls</h2>
+                    <p>RPC calls are different than PubSub messages in that they apply only to the server
+                        and the one client who made the call.</p>
+
+                    <p>The following is a example of a remote "echo" procedure call, where the parameter
+                        is echoed back to the client in the response.</p>
+
+                    <p>In the client, upon click of a button, we send a <code>CALL</code> message to the server:</p>
+
+                    <script src="https://gist.github.com/cgmartin/5847942.js"></script>
+
+                    <p>The <code>sess.call()</code> method returns a promise that will trigger callbacks upon a
+                        <code>CALLRESULT</code> or <code>CALLERROR</code> response.</p>
+
+                    <p>In the server, we've mapped an RPC topic to the function <code>identity</code>:</p>
+
+                    <script src="https://gist.github.com/cgmartin/5847950.js"></script>
+
+                    <p>In our example, if we were to trace the RPC messages from the client to
+                        the server and back again, we would see the following order of events:</p>
+
+                    <p><ol>
+                        <li>Client sends a <code>CALL</code> message to the server:
+                            <code>[2,"0.arg98rkv3aowp14i","rpc:echo","test"]</code> [via <code>sess.call("rpc:echo", "test");</code>]</li>
+                        <li>Server receives the <code>CALL</code> message and checks it's :on-call map for a topic match.
+                            Since there is a match with a function, the server <code>apply</code>s
+                            the call parameters to the <code>identity</code> function and returns a
+                            <code>CALLRESULT</code> message to the client:
+                            <code>[3,"0.arg98rkv3aowp14i","test"]</code></li>
+                        <li>Client receives the <code>CALLRESULT</code> message, and triggers the
+                            appropriate callback handler.</li>
+                    </ol></p>
+
+                    <p class="alert alert-info">
+                        <strong>Note:</strong> if any exceptions are thrown during a function call on the server,
+                        a <code>CALLERROR</code> result will be sent out to the client:
+                        <code>4,"0.wg3eowm7t6pf1or","http://api.wamp.ws/error#internal","internal error","An exception"]</code>
+                    </p>
+
+                    <p>WAMP RPC calls are asynchronous. It is possible that multiple calls could be in progress,
+                        where the client has yet to receive a result.</p>
+                </section>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block inline-script %}
+<script> $('body').scrollspy(); </script>
+{% endblock %}
