@@ -1,4 +1,4 @@
-(defproject clj-wamp-example "0.2.0"
+(defproject clj-wamp-example "0.2.1"
   :description "An example http-kit websocket project with clj-wamp"
   :url "https://github.com/cgmartin/clj-wamp-example"
   :license {:name "Eclipse Public License"
