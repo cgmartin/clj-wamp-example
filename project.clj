@@ -1,9 +1,10 @@
-(defproject clj-wamp-example "0.2.1"
+(defproject clj-wamp-example "0.2.2"
   :description "An example http-kit websocket project with clj-wamp"
   :url "https://github.com/cgmartin/clj-wamp-example"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :min-lein-version "2.0.0"
+  :uberjar-name "clj-wamp-example-standalone.jar"
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [log4j "1.2.17" :exclusions [javax.mail/mail
                                               javax.jms/jms
