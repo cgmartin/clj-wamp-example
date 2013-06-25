@@ -26,9 +26,9 @@
   (GET "/tutorial" [:as req]
     (render req "tutorial.html" {:title "Tutorial / Quickstart Guide"}))
   (GET "/chat" [:as req]
-    (render req "chat.html" {:title "Chat Demo Example" :ws-uri (:ws-uri (conf))}))
+    (render req "chat.html" (merge (conf) {:title "Chat Demo Example"})))
   (GET "/rpc"  [:as req]
-    (render req "rpc.html"  {:title "RPC Demo Example" :ws-uri (:ws-uri (conf))}))
+    (render req "rpc.html"  (merge (conf) {:title "RPC Demo Example"})))
   (GET "/ws"   [:as req] (wamp-handler req))
   ;; static files under ./resources/public folder
   (route/resources "/")

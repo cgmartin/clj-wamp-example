@@ -12,6 +12,7 @@
                     <li><a href="#wampprefix"><i class="icon-chevron-right"></i> WAMP Prefixes</a></li>
                     <li><a href="#wamppubsub"><i class="icon-chevron-right"></i> WAMP PubSub</a></li>
                     <li><a href="#wamprpc"><i class="icon-chevron-right"></i> WAMP RPC</a></li>
+                    <li><a href="#moreinfo"><i class="icon-chevron-right"></i> More Information</a></li>
                 </ul>
             </div>
 
@@ -185,9 +186,10 @@ ab.connect(
 
                 <section id="wampprefix">
                     <h2>WAMP Prefixes</h2>
-                    <p>In the following sections you will find that the PubSub topics and
+                    <p>In the next sections you will find that the PubSub topics and
                         RPC procedures are identified in the client with CURIEs
                         (Compact URI Expressions).</p>
+
                     <p>For example:</p>
 
 <pre>
@@ -312,6 +314,20 @@ sess.subscribe("event:chat", onChatEvent);
 
                     <p>WAMP RPC calls are asynchronous. It is possible that multiple calls could be in progress,
                         where the client has yet to receive a result.</p>
+                </section>
+
+                <section id="moreinfo">
+                    <h2>More Information</h2>
+
+                    <ul>
+                        <li><a href="http://wamp.ws/spec">WAMP Specification</a>
+                        <li>AutobahnJS <a href="http://autobahn.ws/js/tutorials">Tutorials</a> and
+                            <a href="http://autobahn.ws/js/reference">API Reference</a>
+                        <li><a href="http://wamp.ws/spec">WAMP Specification</a>
+                        <li><a href="http://http-kit.org/server.html#websocket">HTTP Kit's WebSocket example</a>
+                        <li><a href="https://github.com/weavejester/compojure">Compojure routing</a>
+                    </ul>
+
                 </section>
 
             </div>
