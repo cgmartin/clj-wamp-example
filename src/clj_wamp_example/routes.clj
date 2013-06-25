@@ -20,15 +20,16 @@
     (assoc (or params {})
       :request req)))
 
-(def ws-uri (:ws-uri (conf)))
-
 (defroutes server-routes*
-  (GET "/"         [:as req] (render req "home.html"))
-  (GET "/tutorial" [:as req] (render req "tutorial.html"))
-  (GET "/chat" [:as req] (render req "chat.html" {:title "Chat Example"
-                                                  :ws-uri ws-uri}))
-  (GET "/rpc"  [:as req] (render req "rpc.html"  {:title "RPC Example"
-                                                  :ws-uri ws-uri}))
+  (GET "/" [:as req]
+    (render req "home.html" {:title "Clojure WebSocket subprotocol for HTTP Kit"}))
+  (GET "/tutorial" [:as req]
+    (render req "tutorial.html" {:title "Tutorial / Quickstart Guide"}))
+  (let [ws-uri (:ws-uri (conf))]
+    (GET "/chat" [:as req]
+      (render req "chat.html" {:title "Chat Demo Example" :ws-uri ws-uri}))
+    (GET "/rpc"  [:as req]
+      (render req "rpc.html"  {:title "RPC Demo Example" :ws-uri ws-uri})))
   (GET "/ws"   [:as req] (wamp-handler req))
   ;; static files under ./resources/public folder
   (route/resources "/")

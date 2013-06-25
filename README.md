@@ -35,26 +35,6 @@ Then point browser to [localhost:8080](http://localhost:8080)
 Application defaults are supplied by environment-based configuration
 found within `./resources-dev/config.clj`.
 
-Dev lifecycle via REPL:
-
- 1. Start up a REPL: `lein repl`
- 2. Load the app:
-
-```bash
-testwamp2.main=> (use '[clojure.tools.namespace.repl :only (refresh)])
-testwamp2.main=> (refresh)
-testwamp2.main=> (start-server) ; starts/restarts the server
-```
- 3. Test it out: [localhost:8080](http://localhost:8080)
- 4. Modify some source files (.clj)
- 5. Restart:
-
-```bash
-testwamp2.main=> (stop-server)
-testwamp2.main=> (refresh)
-testwamp2.main=> (start-server)
-```
-
 ## Technologies used
 
 This project was created from the [clj-wamp leiningen template](https://github.com/cgmartin/clj-wamp-template) and

@@ -9,6 +9,7 @@
                     <li><a href="#projectstructure"><i class="icon-chevron-right"></i> Project Structure</a></li>
                     <li><a href="#javascriptclient"><i class="icon-chevron-right"></i> JavaScript Client</a></li>
                     <li><a href="#clojureserver"><i class="icon-chevron-right"></i> Clojure Server</a></li>
+                    <li><a href="#wampprefix"><i class="icon-chevron-right"></i> WAMP Prefixes</a></li>
                     <li><a href="#wamppubsub"><i class="icon-chevron-right"></i> WAMP PubSub</a></li>
                     <li><a href="#wamprpc"><i class="icon-chevron-right"></i> WAMP RPC</a></li>
                 </ul>
@@ -179,8 +180,31 @@ ab.connect(
                     <script src="https://gist.github.com/cgmartin/5846725.js"></script>
 
                     <p>Now that you've gotten a high-level overview of everything, let's
-                        take a closer look into WAMP's two primary message categories:
-                        <strong>PubSub</strong> and <strong>RPC</strong></p>
+                        take a closer look into WAMP's primary message categories.</p>
+                </section>
+
+                <section id="wampprefix">
+                    <h2>WAMP Prefixes</h2>
+                    <p>In the following sections you will find that the PubSub topics and
+                        RPC procedures are identified in the client with CURIEs
+                        (Compact URI Expressions).</p>
+                    <p>For example:</p>
+
+<pre>
+sess.prefix("event", "http://wamptutorial/event#");
+sess.subscribe("event:chat", onChatEvent);
+</pre>
+
+                    <p>The <code>"event:chat"</code> string in the subscribe call is a CURIE
+                        of the <code>"http://wamptutorial/event#chat"</code> URI.</p>
+
+                    <p>The <code>PREFIX</code> message allows the client to abbreviate
+                        fully qualified URIs in order to reduce communication volume with the
+                        server: <code>[1,"event","http://wamptutorial/event#"]</code></p>
+
+                    <p>See the
+                        <a href="http://wamp.ws/spec#prefix_message">PREFIX Message docs @ WAMP.ws</a> for more info.</p>
+
                 </section>
 
                 <section id="wamppubsub">
@@ -189,11 +213,9 @@ ab.connect(
                     <p>The following is a basic example of PubSub events with clj-wamp, where
                         the server relays all <code>PUBLISH</code> messages to subscribed clients, as-is.</p>
 
-                    <p>In the client, during connection of the WebSocket, we will:
-                        <ul>
-                            <li>register a new topic prefix <code>event</code> for pubsub events
-                            <li>subscribe a handler for <code>event:chat</code> events:
-                        </ul></p>
+                    <p>In the client, during connection of the WebSocket, we will
+                        subscribe an event handler for the <code>event:chat</code> topic:</p>
+
 
                     <script src="https://gist.github.com/cgmartin/5847644.js"></script>
 
@@ -201,11 +223,6 @@ ab.connect(
                         will be sent to the server and broadcast out to all subscribed
                         clients. Open up an additional browser window and watch the events
                         be delivered to both.</p>
-
-                    <p>The <code>PREFIX</code> message allows for the fully qualified topic URI
-                        to be aliased/shortened, for convenience to developers and to reduce
-                        communication volume. See the
-                        <a href="http://wamp.ws/spec#prefix_message">PREFIX Message docs @ WAMP.ws</a> for more info.</p>
 
                     <p>Taking a look at the server code:</p>
 
@@ -290,7 +307,7 @@ ab.connect(
                     <p class="alert alert-info">
                         <strong>Note:</strong> if any exceptions are thrown during a function call on the server,
                         a <code>CALLERROR</code> result will be sent out to the client:
-                        <code>4,"0.wg3eowm7t6pf1or","http://api.wamp.ws/error#internal","internal error","An exception"]</code>
+                        <code>[4,"0.wg3eowm7t6pf1or","http://api.wamp.ws/error#internal","internal error","An exception"]</code>
                     </p>
 
                     <p>WAMP RPC calls are asynchronous. It is possible that multiple calls could be in progress,
