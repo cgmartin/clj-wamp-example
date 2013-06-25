@@ -20,15 +20,26 @@
     (assoc (or params {})
       :request req)))
 
+(defn wrap-cache
+  "Set cache control headers for pages that do not change frequently"
+  [age body]
+  {:body body :headers {"Cache-Control" (str "public, max-age=" age)}})
+
+(def cache-age 900)
+
 (defroutes server-routes*
   (GET "/" [:as req]
-    (render req "home.html" {:title "Clojure WebSocket subprotocol for HTTP Kit"}))
+    (wrap-cache cache-age
+      (render req "home.html" {:title "Clojure WebSocket subprotocol for HTTP Kit"})))
   (GET "/tutorial" [:as req]
-    (render req "tutorial.html" {:title "Tutorial / Quickstart Guide"}))
+    (wrap-cache cache-age
+      (render req "tutorial.html" {:title "Tutorial / Quickstart Guide"})))
   (GET "/chat" [:as req]
-    (render req "chat.html" (merge (conf) {:title "Chat Demo Example"})))
+    (wrap-cache cache-age
+      (render req "chat.html" (merge (conf) {:title "Chat Demo Example"}))))
   (GET "/rpc"  [:as req]
-    (render req "rpc.html"  (merge (conf) {:title "RPC Demo Example"})))
+    (wrap-cache cache-age
+      (render req "rpc.html"  (merge (conf) {:title "RPC Demo Example"}))))
   (GET "/ws"   [:as req] (wamp-handler req))
   ;; static files under ./resources/public folder
   (route/resources "/")
