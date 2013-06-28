@@ -38,9 +38,8 @@ $(function() {
                 $('#error-modal').modal('show');
             }
         },
-        //          Http-kit does not currently support sub-protocol headers
-        // Options                                          Important!  vvvv
-        {'maxRetries': 60, 'retryDelay': 30000, 'skipSubprotocolCheck': true}
+        // Options
+        {'maxRetries': 60, 'retryDelay': 30000, 'skipSubprotocolCheck': false}
     );
 
 

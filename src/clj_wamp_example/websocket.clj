@@ -1,5 +1,6 @@
 (ns clj-wamp-example.websocket
-  (:use [clojure.string :only [split]])
+  (:use [clojure.string :only [split]]
+        [clj-wamp-example.config :only [conf]])
   (:require [clojure.tools.logging :as log]
             [org.httpkit.server :as http-kit]
             [org.httpkit.timer :as timer]
@@ -177,19 +178,17 @@
 (defn wamp-handler
   "Returns a http-kit websocket handler with wamp subprotocol"
   [req]
-  (http-kit/with-channel req channel
-    (if-not (http-kit/websocket? channel)
-      (http-kit/close channel)
-      (wamp/http-kit-handler channel
-        {:on-open        ws-on-open
-         :on-close       ws-on-close
-         :on-call        {(rpc-url "echo")  identity
-                          (rpc-url "throw") (fn [] (throw (Exception. "An exception")))
-                          (rpc-url "calc")  rpc-calc}
-         :on-subscribe   {(evt-url "chat")  ws-chat-subscribe?
-                          :on-after         ws-on-subscribe}
-         :on-publish     {(evt-url "chat")  ws-on-chat-publish}
-         :on-unsubscribe ws-on-unsubscribe}))))
+  (wamp/with-channel-validation req channel (:ws-origins-re (conf))
+    (wamp/http-kit-handler channel
+      {:on-open        ws-on-open
+       :on-close       ws-on-close
+       :on-call        {(rpc-url "echo")  identity
+                        (rpc-url "throw") (fn [] (throw (Exception. "An exception")))
+                        (rpc-url "calc")  rpc-calc}
+       :on-subscribe   {(evt-url "chat")  ws-chat-subscribe?
+                        :on-after         ws-on-subscribe}
+       :on-publish     {(evt-url "chat")  ws-on-chat-publish}
+       :on-unsubscribe ws-on-unsubscribe})))
 
 ;; Utilities
 

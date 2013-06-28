@@ -263,13 +263,11 @@ sess.subscribe("event:chat", onChatEvent);
                             <code>onChatEvent</code> JS handler is called.</li>
                     </ol></p>
 
-                    <div class="alert alert-info">
-                        <p>Also note that during a client-side publish, you have
-                            <a href="http://autobahn.ws/js/reference#Session_publish">additional options</a> for:</p>
-                        <ul>
-                            <li>Excluding the client itself (or a list of clients) from receiving the message.</li>
-                            <li>Targeting a specific list of clients who will receive the message while others will not.</li>
-                        </ul></div>
+                    <p class="alert alert-info">
+                        Also note that during a client-side publish, you have
+                            <a href="http://autobahn.ws/js/reference#Session_publish">additional options</a> for
+                            whitelisting and blacklisting other clients.
+                    </p>
                 </section>
 
                 <section id="wamprpc">
