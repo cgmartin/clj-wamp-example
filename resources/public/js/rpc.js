@@ -39,7 +39,7 @@ $(function() {
             }
         },
         // Options
-        {'maxRetries': 60, 'retryDelay': 30000, 'skipSubprotocolCheck': false}
+        {'maxRetries': 60, 'retryDelay': 30000}
     );
 
 
