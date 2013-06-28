@@ -17,7 +17,7 @@
                  [compojure "1.1.5"]
                  [clabango "0.5"]
                  [http-kit "2.1.3"]
-                 [clj-wamp "1.0.0-beta2"]]
+                 [clj-wamp "1.0.0-beta3"]]
   :profiles {:dev {:resource-paths ["resources-dev"]
                    :dependencies [[org.clojure/tools.namespace "0.2.3"]]
                    :jvm-opts ["-Xmx1g" "-server"

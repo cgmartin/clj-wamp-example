@@ -106,7 +106,7 @@
                  034&nbsp;&nbsp;
                 </span><br/>
 <span class="covered" title="2 out of 2 forms covered">
-                 035&nbsp;&nbsp;(def&nbsp;project-version&nbsp;"clj-wamp/1.0.0-beta2")
+                 035&nbsp;&nbsp;(def&nbsp;project-version&nbsp;"clj-wamp/1.0.0-beta3")
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
                  036&nbsp;&nbsp;
@@ -1347,119 +1347,128 @@
 <span class="not-tracked" title="0 out of 0 forms covered">
                  448&nbsp;&nbsp;&nbsp;&nbsp;[origin-re&nbsp;req]
                 </span><br/>
-<span class="covered" title="9 out of 9 forms covered">
-                 449&nbsp;&nbsp;&nbsp;&nbsp;(re-matches&nbsp;origin-re&nbsp;(get-in&nbsp;req&nbsp;[:headers&nbsp;"origin"])))
-                </span><br/>
-<span class="blank" title="0 out of 0 forms covered">
-                 450&nbsp;&nbsp;
-                </span><br/>
-<span class="covered" title="1 out of 1 forms covered">
-                 451&nbsp;&nbsp;(defn&nbsp;subprotocol?
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                 452&nbsp;&nbsp;&nbsp;&nbsp;"Checks&nbsp;if&nbsp;a&nbsp;protocol&nbsp;string&nbsp;exists&nbsp;in&nbsp;the&nbsp;Sec-WebSocket-Protocol
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                 453&nbsp;&nbsp;&nbsp;&nbsp;list&nbsp;header."
-                </span><br/>
-<span class="not-tracked" title="0 out of 0 forms covered">
-                 454&nbsp;&nbsp;&nbsp;&nbsp;[proto&nbsp;req]
+<span class="covered" title="7 out of 7 forms covered">
+                 449&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[req-origin&nbsp;(get-in&nbsp;req&nbsp;[:headers&nbsp;"origin"])]
                 </span><br/>
 <span class="covered" title="12 out of 12 forms covered">
-                 455&nbsp;&nbsp;&nbsp;&nbsp;(if-let&nbsp;[protocols&nbsp;(get-in&nbsp;req&nbsp;[:headers&nbsp;"sec-websocket-protocol"])]
+                 450&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(or&nbsp;(nil?&nbsp;origin-re)&nbsp;(nil?&nbsp;req-origin))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 451&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;true
+                </span><br/>
+<span class="covered" title="9 out of 9 forms covered">
+                 452&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(re-matches&nbsp;origin-re&nbsp;(get-in&nbsp;req&nbsp;[:headers&nbsp;"origin"])))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 453&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 454&nbsp;&nbsp;(defn&nbsp;subprotocol?
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 455&nbsp;&nbsp;&nbsp;&nbsp;"Checks&nbsp;if&nbsp;a&nbsp;protocol&nbsp;string&nbsp;exists&nbsp;in&nbsp;the&nbsp;Sec-WebSocket-Protocol
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 456&nbsp;&nbsp;&nbsp;&nbsp;list&nbsp;header."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 457&nbsp;&nbsp;&nbsp;&nbsp;[proto&nbsp;req]
+                </span><br/>
+<span class="covered" title="12 out of 12 forms covered">
+                 458&nbsp;&nbsp;&nbsp;&nbsp;(if-let&nbsp;[protocols&nbsp;(get-in&nbsp;req&nbsp;[:headers&nbsp;"sec-websocket-protocol"])]
                 </span><br/>
 <span class="covered" title="4 out of 4 forms covered">
-                 456&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(some&nbsp;#{proto}
+                 459&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(some&nbsp;#{proto}
                 </span><br/>
 <span class="covered" title="8 out of 8 forms covered">
-                 457&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map&nbsp;#(lower-case&nbsp;(trim&nbsp;%))
+                 460&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(map&nbsp;#(lower-case&nbsp;(trim&nbsp;%))
                 </span><br/>
 <span class="covered" title="4 out of 4 forms covered">
-                 458&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(split&nbsp;protocols&nbsp;#",")))))
+                 461&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(split&nbsp;protocols&nbsp;#",")))))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                 459&nbsp;&nbsp;
+                 462&nbsp;&nbsp;
                 </span><br/>
 <span class="partial" title="5 out of 315 forms covered">
-                 460&nbsp;&nbsp;(defmacro&nbsp;with-channel-validation
+                 463&nbsp;&nbsp;(defmacro&nbsp;with-channel-validation
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                 461&nbsp;&nbsp;&nbsp;&nbsp;"Replaces&nbsp;HTTP&nbsp;Kit&nbsp;with-channel&nbsp;macro&nbsp;to&nbsp;do&nbsp;extra&nbsp;validation
+                 464&nbsp;&nbsp;&nbsp;&nbsp;"Replaces&nbsp;HTTP&nbsp;Kit&nbsp;with-channel&nbsp;macro&nbsp;to&nbsp;do&nbsp;extra&nbsp;validation
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                 462&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;the&nbsp;wamp&nbsp;subprotocol&nbsp;and&nbsp;allowed&nbsp;origin&nbsp;URLs.
+                 465&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;the&nbsp;wamp&nbsp;subprotocol&nbsp;and&nbsp;allowed&nbsp;origin&nbsp;URLs.
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                 463&nbsp;&nbsp;
+                 466&nbsp;&nbsp;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                 464&nbsp;&nbsp;&nbsp;&nbsp;(defn&nbsp;my-wamp-handler&nbsp;[request]
+                 467&nbsp;&nbsp;&nbsp;&nbsp;(defn&nbsp;my-wamp-handler&nbsp;[request]
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                 465&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(wamp/with-channel-validation&nbsp;request&nbsp;channel&nbsp;#\"https?://myhost\"
+                 468&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(wamp/with-channel-validation&nbsp;request&nbsp;channel&nbsp;#\"https?://myhost\"
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                 466&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(wamp/http-kit-handler&nbsp;channel&nbsp;{&nbsp;...&nbsp;})))
+                 469&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(wamp/http-kit-handler&nbsp;channel&nbsp;{&nbsp;...&nbsp;})))
                 </span><br/>
 <span class="blank" title="0 out of 0 forms covered">
-                 467&nbsp;&nbsp;
+                 470&nbsp;&nbsp;
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                 468&nbsp;&nbsp;&nbsp;&nbsp;See&nbsp;org.httpkit.server&nbsp;for&nbsp;more&nbsp;information."
+                 471&nbsp;&nbsp;&nbsp;&nbsp;See&nbsp;org.httpkit.server&nbsp;for&nbsp;more&nbsp;information."
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                 469&nbsp;&nbsp;&nbsp;&nbsp;[request&nbsp;ch-name&nbsp;origin-re&nbsp;&&nbsp;body]
+                 472&nbsp;&nbsp;&nbsp;&nbsp;[request&nbsp;ch-name&nbsp;origin-re&nbsp;&&nbsp;body]
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                 470&nbsp;&nbsp;&nbsp;&nbsp;`(let&nbsp;[~ch-name&nbsp;(:async-channel&nbsp;~request)]
+                 473&nbsp;&nbsp;&nbsp;&nbsp;`(let&nbsp;[~ch-name&nbsp;(:async-channel&nbsp;~request)]
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                 471&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(:websocket?&nbsp;~request)
+                 474&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(:websocket?&nbsp;~request)
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                 472&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if-let&nbsp;[key#&nbsp;(get-in&nbsp;~request&nbsp;[:headers&nbsp;"sec-websocket-key"])]
+                 475&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if-let&nbsp;[key#&nbsp;(get-in&nbsp;~request&nbsp;[:headers&nbsp;"sec-websocket-key"])]
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                 473&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(origin-match?&nbsp;~origin-re&nbsp;~request)
+                 476&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(origin-match?&nbsp;~origin-re&nbsp;~request)
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                 474&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(subprotocol?&nbsp;"wamp"&nbsp;~request)
+                 477&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(subprotocol?&nbsp;"wamp"&nbsp;~request)
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                 475&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(do
+                 478&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(do
                 </span><br/>
 <span class="not-covered" title="0 out of 6 forms covered">
-                 476&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(.sendHandshake&nbsp;~(with-meta&nbsp;ch-name&nbsp;{:tag&nbsp;`AsyncChannel})
+                 479&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(.sendHandshake&nbsp;~(with-meta&nbsp;ch-name&nbsp;{:tag&nbsp;`AsyncChannel})
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                 477&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"Upgrade"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"websocket"
+                 480&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"Upgrade"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"websocket"
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                 478&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Connection"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Upgrade"
+                 481&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Connection"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Upgrade"
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                 479&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Sec-WebSocket-Accept"&nbsp;&nbsp;&nbsp;(httpkit/accept&nbsp;key#)
+                 482&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Sec-WebSocket-Accept"&nbsp;&nbsp;&nbsp;(httpkit/accept&nbsp;key#)
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                 480&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Sec-WebSocket-Protocol"&nbsp;"wamp"})
+                 483&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"Sec-WebSocket-Protocol"&nbsp;"wamp"})
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                 481&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;~@body
+                 484&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;~@body
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                 482&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:body&nbsp;~ch-name})
+                 485&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:body&nbsp;~ch-name})
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                 483&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:status&nbsp;400&nbsp;:body&nbsp;"missing&nbsp;or&nbsp;bad&nbsp;WebSocket-Protocol"})
+                 486&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:status&nbsp;400&nbsp;:body&nbsp;"missing&nbsp;or&nbsp;bad&nbsp;WebSocket-Protocol"})
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                 484&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:status&nbsp;400&nbsp;:body&nbsp;"missing&nbsp;or&nbsp;bad&nbsp;WebSocket-Origin"})
+                 487&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:status&nbsp;400&nbsp;:body&nbsp;"missing&nbsp;or&nbsp;bad&nbsp;WebSocket-Origin"})
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                 485&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:status&nbsp;400&nbsp;:body&nbsp;"missing&nbsp;or&nbsp;bad&nbsp;WebSocket-Key"})
+                 488&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:status&nbsp;400&nbsp;:body&nbsp;"missing&nbsp;or&nbsp;bad&nbsp;WebSocket-Key"})
                 </span><br/>
 <span class="not-tracked" title="0 out of 0 forms covered">
-                 486&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:status&nbsp;400&nbsp;:body&nbsp;"not&nbsp;websocket&nbsp;protocol"})))
+                 489&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:status&nbsp;400&nbsp;:body&nbsp;"not&nbsp;websocket&nbsp;protocol"})))
                 </span><br/>
  </body>
 </html>
