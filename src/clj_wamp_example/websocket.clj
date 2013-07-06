@@ -175,6 +175,21 @@
   (swap! calc-state dissoc sess-id) ; clean up old state
   (log/info "Websocket client disconnected [" sess-id "] " status))
 
+(defn- auth-secret [sess-id auth-key extra]
+  "Returns the auth key's secret (ie. password), typically retrieved from a database."
+  "secret-password")
+
+(defn- auth-permissions
+  "Returns the permissions for a client session by auth key."
+  [sess-id auth-key]
+  {:rpc       {(rpc-url "echo")      true
+               (rpc-url "throw")     true
+               (rpc-url "calc")      true
+               (rpc-url "not-found") true
+               (rpc-url "ping")      false}
+   :subscribe {(evt-url "chat")      true}
+   :publish   {(evt-url "chat")      true}})
+
 (defn wamp-handler
   "Returns a http-kit websocket handler with wamp subprotocol"
   [req]
@@ -184,11 +199,14 @@
        :on-close       ws-on-close
        :on-call        {(rpc-url "echo")  identity
                         (rpc-url "throw") (fn [] (throw (Exception. "An exception")))
-                        (rpc-url "calc")  rpc-calc}
+                        (rpc-url "calc")  rpc-calc
+                        (rpc-url "ping")  (fn [] "pong")}
        :on-subscribe   {(evt-url "chat")  ws-chat-subscribe?
                         :on-after         ws-on-subscribe}
        :on-publish     {(evt-url "chat")  ws-on-chat-publish}
-       :on-unsubscribe ws-on-unsubscribe})))
+       :on-unsubscribe ws-on-unsubscribe
+       :on-auth        {:secret           auth-secret
+                        :permissions      auth-permissions}})))
 
 ;; Utilities
 

@@ -25,8 +25,28 @@ $(function() {
         function (session) {
             sess = session;
             console.log("Connected to " + WS_URI, sess.sessionid());
-            sess.prefix("rpc", "http://clj-wamp-example/rpc#");
             $('#error-modal').modal('hide');
+
+            // Authenticate
+            var username = 'guest';
+            var password = 'secret-password';
+
+            // send authreq rpc call
+            sess.authreq(username).then(
+                function (challenge) {
+                    console.log("Received auth challenge", challenge);
+                    var signature = sess.authsign(password, challenge);
+
+                    // send auth rpc call
+                    sess.auth(signature).then(
+                        function(permissions) {
+                            console.log("Authentication complete", permissions);
+                            sess.prefix("rpc", "http://clj-wamp-example/rpc#");
+                        },
+                        function() { console.log("Authentication failed"); });
+                },
+                function() { console.log("AuthRequest failed"); });
+
         },
         // Disconnection callback
         function (code, reason) {
@@ -99,6 +119,17 @@ $(function() {
                     .text("[" + res.desc.toUpperCase() + "] " + res.detail);
             }
         );
+    });
+    $('#err-no-auth-btn').click(function() {
+        sess.call("rpc:ping").then(
+            function (res) { console.log("rpc:ping RCV", res); },
+            function (res) {
+                console.log("rpc:ping RCV error", res);
+                $errorErrors.show()
+                    .text("[" + res.desc.toUpperCase() + "] ");
+            }
+        );
+        console.log("rpc:ping SND");
     });
 
     // Calculator digits update the display

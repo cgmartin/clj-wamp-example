@@ -1,2 +1,2 @@
 Lines Non-Blank Instrumented Covered Partial
-  489       412     225        197         24 clj_wamp/server.clj
+  677       578     319        282         27 clj_wamp/server.clj

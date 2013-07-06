@@ -12,6 +12,7 @@
                     <li><a href="#wampprefix"><i class="icon-chevron-right"></i> WAMP Prefixes</a></li>
                     <li><a href="#wamppubsub"><i class="icon-chevron-right"></i> WAMP PubSub</a></li>
                     <li><a href="#wamprpc"><i class="icon-chevron-right"></i> WAMP RPC</a></li>
+                    <li><a href="#wampcra"><i class="icon-chevron-right"></i> WAMP-CRA</a></li>
                     <li><a href="#moreinfo"><i class="icon-chevron-right"></i> More Information</a></li>
                 </ul>
             </div>
@@ -312,6 +313,43 @@ sess.subscribe("event:chat", onChatEvent);
 
                     <p>WAMP RPC calls are asynchronous. It is possible that multiple calls could be in progress,
                         where the client has yet to receive a result.</p>
+                </section>
+
+                <section id="wampcra">
+                    <h2>WAMP Challenge-Response Authentication</h2>
+                    <p>AutobahnJS provides a simple way of doing authentication using the WAMP protocol.
+                        Here's how it works...</p>
+
+                    <p><ol>
+                        <li>Client obtains the user's credentials (ie. username) and password through some method,
+                            like a prompt or via the web session.
+                        <li>A WAMP RPC call <code>authreq</code> is made to the server with the credential key,
+                            and a response is sent back to the client with a <em>challenge hash string</em>.</li>
+                        <li>Using the challenge string, the client encrypts the user's password and makes a second
+                            WAMP RPC call <code>auth</code> with this digital signature.</li>
+                        <li>The server validates the signature against the stored credentials and returns back
+                            a map of WAMP RPC/PubSub permissions.</li>
+                        </ol></p>
+
+                    <p>To enable WAMP-CRA in clj-wamp, add a <code>:on-auth</code> map with:</p>
+                    <p><ul><li><code>:secret</code> A callback function for obtaining the user's secret
+                        (typically from a database).
+                        <li><code>:permissions</code> A callback function that returns the PubSub/RPC permissions
+                        for the user.</li></ul></p>
+
+                    <script src="https://gist.github.com/cgmartin/5941239.js"></script>
+
+                    <p>While the permissions are sent back to inform the client of what is allowed,
+                        they are primarily used on the server to allow/deny access to the various RPC/PubSub topics.</p>
+
+                    <p>If an RPC topic is not allowed, an <code>unauthorized</code> error is sent back.</p>
+                    <p>And if a PubSub topic is not allowed, the publish or subscription is dropped/ignored.</p>
+
+                    <p>In the client, we issue the two <code>authreq</code> and <code>auth</code> RPC calls
+                        during the connection process:</p>
+
+                    <script src="https://gist.github.com/cgmartin/5941288.js"></script>
+
                 </section>
 
                 <section id="moreinfo">

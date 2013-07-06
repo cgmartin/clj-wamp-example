@@ -23,11 +23,30 @@ $(function() {
         function (session) {
             sess = session;
             console.log("Connected to " + WS_URI, sess.sessionid());
-            sess.prefix("event", "http://clj-wamp-example/event#"); // Add a CURI prefix
-            sess.subscribe("event:chat", onEvent);                  // Subscribe to chat channel
             $('#error-modal').modal('hide');
-            // Enable below to show the change username modal upon connection
-            //setTimeout(function () { $('#change-username-modal').modal('show'); }, 500);
+
+            // Authenticate
+            var username = 'guest';
+            var password = 'secret-password';
+
+            // send authreq rpc call
+            sess.authreq(username).then(
+                function (challenge) {
+                    console.log("Received auth challenge", challenge);
+                    var signature = sess.authsign(password, challenge);
+
+                    // send auth rpc call
+                    sess.auth(signature).then(
+                        function(permissions) {
+                            console.log("Authentication complete", permissions);
+                            sess.prefix("event", "http://clj-wamp-example/event#"); // Add a CURI prefix
+                            sess.subscribe("event:chat", onEvent);                  // Subscribe to chat channel
+                            // Enable below to show the change username modal upon connection
+                            //setTimeout(function () { $('#change-username-modal').modal('show'); }, 500);
+                        },
+                        function() { console.log("Authentication failed"); });
+                },
+                function() { console.log("AuthRequest failed"); });
         },
         // Disconnection callback
         function (code, reason) {
