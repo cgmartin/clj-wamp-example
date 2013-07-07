@@ -323,12 +323,12 @@ sess.subscribe("event:chat", onChatEvent);
                     <p><ol>
                         <li>Client obtains the user's credentials (ie. username) and password through some method,
                             like a prompt or via the web session.
-                        <li>A WAMP RPC call <code>authreq</code> is made to the server with the credential key,
+                        <li>A RPC call <code>authreq</code> is made to the server with the credential key,
                             and a response is sent back to the client with a <em>challenge hash string</em>.</li>
                         <li>Using the challenge string, the client encrypts the user's password and makes a second
-                            WAMP RPC call <code>auth</code> with this digital signature.</li>
+                            RPC call <code>auth</code> with this digital signature.</li>
                         <li>The server validates the signature against the stored credentials and returns back
-                            a map of WAMP RPC/PubSub permissions.</li>
+                            a map of RPC/PubSub permissions.</li>
                         </ol></p>
 
                     <p>To enable WAMP-CRA in clj-wamp, add a <code>:on-auth</code> map with:</p>
